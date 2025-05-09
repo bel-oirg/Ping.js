@@ -23,7 +23,8 @@ fastify.register(import ('./routes/register.js'))
 fastify.register(import ('./routes/login.js'))
 fastify.register(import ('./routes/login_verify.js'))
 fastify.register(import ('./routes/protected.js'))
-fastify.register(import ('./routes/login_oauth.js'))
+fastify.register(import ('./routes/login_42.js'))
+fastify.register(import ('./routes/login_google.js'))
 
 try
 {

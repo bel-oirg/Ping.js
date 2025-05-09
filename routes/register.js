@@ -43,11 +43,11 @@ const RegisterRoute = (fastify, options, done) =>
                 first_name: first_name,
                 last_name: last_name,
             })
-            res.code(201).send({Success : 'true'})
+            res.status(201).send({Success : 'true'})
         }
         catch(err)
         {
-            res.code(400).send({Success:false, Error : err.message})
+            res.status(400).send({Success:false, Error : err.message})
         }
     }
 

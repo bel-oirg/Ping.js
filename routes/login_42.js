@@ -41,18 +41,20 @@ const oauth42 = (fastify, options, done) => {
             
             const user_json =  await user_data.json()
 
-            const try_login = await Account.findOne({ where : {username : user_json.login, email : user_json.email}})
+            const try_login = await Account.findOne({ where : {username : user_json.login,
+                                                               email : user_json.email,
+                                                               is_oauth: true}})
             if (try_login)
             {
                 const token = fastify.jwt.sign({user_id:try_login.id})
-                return res.code(200).send({Success: true, token: token})
+                return res.status(200).send({Success: true, token: token})
             }
 
             const search = await Account.findOne({ where : { [Op.or] : [
                 {username : user_json.login}, {email : user_json.email }] }})
             
             if (search)
-                return res.code(409).send({Success: false, Error: 'Your username/email is not unique'})
+                return res.status(409).send({Success: false, Error: 'Your username/email is not unique'})
 
             let file_path = path.join(process.cwd(), 'media', 'avatar', `${user_json.login}.jpg`)
             if (fs.existsSync(file_path))
@@ -87,11 +89,11 @@ const oauth42 = (fastify, options, done) => {
             })
 
             const token = fastify.jwt.sign({user_id:created_user.id})
-            return res.code(200).send({Success: true, token: token})
+            return res.status(200).send({Success: true, token: token})
         }
         catch(err)
         {
-            return res.code(400).send({Success: false, Error: err.message})
+            return res.status(400).send({Success: false, Error: err.message})
         }
     })
                 

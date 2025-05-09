@@ -9,17 +9,17 @@ const auth = (fastify, options, done) => {
 
         const user = await Account.findOne({where :{username : username}})
         if (!user)
-            return res.code(401).send({Success: 'false', Error: 'User does not exist'})
+            return res.status(401).send({Success: 'false', Error: 'User does not exist'})
         if (user.is_oauth)
-            return res.code(401).send({Success: 'false', Error: 'Use Oauth to login'})
+            return res.status(401).send({Success: 'false', Error: 'Use Oauth to login'})
 
         const match = await bcrypt.compare(password, user.password);
         if (!match)
-            return res.code(401).send({Success: 'false', Error: 'Incorrect Password'})
+            return res.status(401).send({Success: 'false', Error: 'Incorrect Password'})
 
         const token = fastify.jwt.sign({id: user.id})
 
-        res.code(200).send({Success: 'true', token:token})
+        res.status(200).send({Success: 'true', token:token})
     }
 
     const loginSchema = {
