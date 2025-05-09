@@ -7,8 +7,8 @@ import {Op} from 'sequelize'
 const DEFAULT_AVATAR = path.join(process.cwd(), 'media', 'avatar', 'default_avatar.jpg')
 
 const oauth42 = (fastify, options, done) => {
-    
-    fastify.get('/oauth/', async (req, res) => {
+
+    const handler42 = async (req, res) => {
         try
         {
             let params = {
@@ -95,9 +95,41 @@ const oauth42 = (fastify, options, done) => {
         {
             return res.status(400).send({Success: false, Error: err.message})
         }
-    })
-                
-    fastify.get('/42', (req, res) => {
+    }
+
+    const oauth42Schema = {
+        schema:
+        {
+            querystring:
+            {
+                type: 'object',
+                required: ['code'],
+                properties: { code: {type:'string'} }
+            },
+            response:
+            {
+                '200':
+                {
+                    type : 'object',
+                    properties: { Success: {type: 'string'}, token: {type : 'string'} }
+                },
+                '4xx':
+                {
+                    type:'object',
+                    properties:
+                    {
+                        Success:{type:'string'},
+                        Error:{type:'string'}
+                    }
+                }
+            }
+        },
+        handler: handler42
+    }
+
+    fastify.get('/oauth/', oauth42Schema)
+
+    fastify.get('/42', (_, res) => {
         res.redirect(process.env.API_42)
     })
 
