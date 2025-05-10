@@ -14,9 +14,6 @@ const oauth2google = (fastify, options, done) => {
         redirectUri: process.env.GOOGLE_REDIRECT
     })
 
-
-
-
     const hanlderGoogle = async (req, res) => {
         try
         {

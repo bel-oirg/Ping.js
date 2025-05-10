@@ -1,0 +1,17 @@
+{
+  "name": "admin-service",
+  "version": "1.0.0",
+  "main": "admin.js",
+  "scripts": {
+    "dev": "nodemon admin.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@adminjs/fastify": "^4.2.0",
+    "@adminjs/sequelize": "^4.1.1",
+    "adminjs": "^7.8.15"
+  }
+}

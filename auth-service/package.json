@@ -1,11 +1,11 @@
 {
-  "name": "p01",
+  "name": "auth-service",
   "version": "1.0.0",
   "main": "server",
   "type": "module",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon --env-file=.env server"
+    "dev": "nodemon --env-file=./config/.env server"
   },
   "keywords": [],
   "author": "",

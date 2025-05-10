@@ -1,5 +1,5 @@
 import Fastify from 'fastify'
-import sequelize from './db.js';
+import sequelize from './config/db.js';
 
 const fastify = Fastify({
     logger: {
@@ -17,14 +17,6 @@ const fastify = Fastify({
     }
 })
 
-fastify.register(import ('@fastify/swagger'))
-fastify.register(import ('@fastify/swagger-ui'), {routePrefix: '/docs',})
-fastify.register(import ('./routes/register.js'))
-fastify.register(import ('./routes/login.js'))
-fastify.register(import ('./routes/login_verify.js'))
-fastify.register(import ('./routes/protected.js'))
-fastify.register(import ('./routes/login_42.js'))
-fastify.register(import ('./routes/login_google.js'))
 
 try
 {

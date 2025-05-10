@@ -1,3 +1,6 @@
-node_modules
-.env
-db.notes
+**/node_modules
+**/.env
+*.env
+auth-service/config/.env
+**/package-lock.json
+./auth-service/db.notes

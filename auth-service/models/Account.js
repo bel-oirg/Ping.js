@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize"
-import sequelize from '../db.js'
+import sequelize from '../config/db.js'
 import path from 'path'
 
 const DEFAULT_BACKGROUND = path.join(process.cwd(), 'media', 'avatar', 'default_background.jpg')
