@@ -18,9 +18,12 @@ const fastify = Fastify({
 })
 
 
+fastify.register(import ('./routes/createFriend.js'))
+
 try
 {
     await sequelize.authenticate();
+    // await sequelize.sync({force:true});
     await sequelize.sync();
     console.log('[DB] connection is good')
 }
@@ -33,7 +36,7 @@ catch(err)
 const start = async () => {
     try
     {
-        fastify.listen({ port:3000 })
+        fastify.listen({ port:3001 })
     }
     catch (err)
     {

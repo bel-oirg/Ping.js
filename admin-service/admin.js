@@ -1,20 +1,21 @@
 import AdminJSFastify from '@adminjs/fastify'
 import AdminJS from 'adminjs'
 import Fastify from 'fastify'
-import Account from '../auth-service/models/Account.js'
+import {models} from '../dash-service/config/db.js'
 import * as AdminJSSequelize from '@adminjs/sequelize'
 
 AdminJS.registerAdapter({
     Resource: AdminJSSequelize.Resource,
     Database: AdminJSSequelize.Database,
-  })
+})
+
 
 const PORT = 1919
 
 const start = async () => {
 
   const app = Fastify()
-  const admin = new AdminJS({resources: [Account]})
+  const admin = new AdminJS({resources: [models.Account, models.Friends]})
 
   await AdminJSFastify.buildRouter(admin,app,)
   

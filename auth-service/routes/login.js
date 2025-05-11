@@ -57,6 +57,11 @@ const auth = (fastify, options, done) => {
     }
 
     fastify.post('/login', loginSchema)
+
+    fastify.get('/list', async (req, res) => {
+        res.send(await Account.findAll())
+    })
+
     
     done() //async ?
 }

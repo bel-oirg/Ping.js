@@ -1,22 +1,19 @@
-import { DataTypes } from "sequelize"
-import sequelize from '../config/db.js'
-import Account from "./Account.js"
-import { FOREIGNKEYS } from "sequelize/lib/query-types"
+export const FriendsMod = (sequelize, DataTypes) => {
 
-const Friend = sequelize.define(
-    'Friend',
-    {
-        status:
+    const Friends = sequelize.define(
+        'Friends',
         {
-            type: DataTypes.ENUM('friends', 'blocked', 'pending'),
-            defaultValue: 'pending',
-            allowNull: false,
+            id:{type :DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            status:
+            {
+                type: DataTypes.ENUM('friends', 'blocked', 'pending'),
+                defaultValue: 'pending',
+                allowNull: false,
+            },
         },
-    },
-    {
-        freezeTableName:true,
-    },
-
-    Account.belongsToMany(Account, {through : Friend}, {ForeignKey:'Sender'}),
-    Account.belongsToMany(Account, {through : Friend}, {ForeignKey:'Receiver'})
-)
+        {
+            freezeTableName:true,
+        })
+    return Friends
+    
+}
