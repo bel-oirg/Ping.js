@@ -35,8 +35,8 @@ export const AccountMod = (sequelize, DataTypes) => {
         Account.belongsToMany(Account,
             {as:'Relation',
             through : models.Friends,
-            foreignKey:'AccountID',
-            otherKey:'FriendID'
+            foreignKey:'SenderKEY',
+            otherKey:'ReceiverKEY'
         })
     }
 

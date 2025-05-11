@@ -19,7 +19,7 @@ const fastify = Fastify({
 
 
 fastify.register(import ('./routes/login_verify.js'))
-fastify.register(import ('./routes/UserRelations.js'))
+fastify.register(import ('./routes/URR.js'))
 
 try
 {
