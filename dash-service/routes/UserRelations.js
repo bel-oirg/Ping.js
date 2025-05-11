@@ -53,6 +53,29 @@ const createFriend = (fastify, options, done) => {
         res.send(await models.Friends.findAll())
     })
 
+
+    fastify.get('/deny-req',
+        {
+            onRequest: [fastify.authenticate]
+        }
+        ,async (req, res) => {
+
+        const sender = await models.Account.findByPk(req.query['id'])
+        if (!sender)
+            res.status(400).send('Account not found')
+
+        const relation = await models.Friends.findOne({ where :
+            {AccountID:sender.id, FriendID:req.user.id, status:'pending'}})
+
+        if (!relation)
+            res.status(400).send('The relation, does not exist')
+
+            
+        await relation.destroy()
+
+        res.send(await models.Friends.findAll())
+    })
+
     fastify.get('/received-req',
         {
             onRequest: [fastify.authenticate]
@@ -83,8 +106,14 @@ const createFriend = (fastify, options, done) => {
         }
         ,async (req, res) => {
 
-        const relation = await models.Friends.findOne({ where :
-            {AccountID:req.user.id, status:'friends'}})
+        const relation = await models.Friends.findOne({ where : 
+            { [Op.or] :
+                [
+                    {AccountID:req.user.id, status:'friends'},
+                    {FriendID:req.user.id, status:'friends'},
+                ]
+            }
+        })
 
         res.send(relation)
     })
@@ -95,12 +124,17 @@ const createFriend = (fastify, options, done) => {
         }
         ,async (req, res) => {
 
-        const relation = await models.Friends.findOne({ where :
-            {AccountID:req.user.id, status:'blocked'}})
+            const relation = await models.Friends.findOne({ where : 
+                { [Op.or] :
+                    [
+                        {AccountID:req.user.id, status:'blocked'},
+                        {FriendID:req.user.id, status:'blocked'},
+                    ]
+                }
+            })
 
         res.send(relation)
     })
-
 
     done()
 }
