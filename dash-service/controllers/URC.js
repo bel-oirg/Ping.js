@@ -38,4 +38,15 @@ export default
         }
     },
 
+    async AllRelationsC(req, res){
+        try
+        {
+            const relations =  await URServices.AllRelations(req.user.id)
+            res.status(200).send(relations)
+        }
+        catch(err)
+        {
+            res.status(err.code).send({Success:false, Error:err.message})
+        }
+    },
 }

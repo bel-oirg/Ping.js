@@ -86,7 +86,7 @@ export default {
 
     async ReceivedReq(accountID)
     {
-        const relation = await models.Friends.findOne({ where :
+        const relation = await models.Friends.findAll({ where :
             {ReceiverKEY:accountID, status:'pending'}})
 
         return (relation)
@@ -94,7 +94,7 @@ export default {
 
     async SentReq(accountID)
     {
-        const relation = await models.Friends.findOne({ where :
+        const relation = await models.Friends.findAll({ where :
             {SenderKEY:accountID, status:'pending'}})
 
         return (relation)
@@ -102,7 +102,7 @@ export default {
 
     async FriendList(accountID)
     {
-        const relation = await models.Friends.findOne({ where : 
+        const relation = await models.Friends.findAll({ where : 
             { [Op.or] :
                 [
                     {SenderKEY:accountID, status:'friends'},
@@ -114,17 +114,24 @@ export default {
         return (relation)
     },
 
-    async BlackList(otherId)
+    async BlackList(accountID)
     {
-        const relation = await models.Friends.findOne({ where : 
-            { [Op.or] :
-                [
-                    {SenderKEY:otherId, status:'blocked'},
-                    {ReceiverKEY:otherId, status:'blocked'},
-                ]
-            }
+        const relation = await models.Friends.findAll({ where : 
+                    {SenderKEY:accountID, status:'blocked'},
         })
 
         return (relation)
     },
+
+    async AllRelations(accountID)
+    {
+        const relations = {
+            friends: await this.FriendList(accountID),
+            blacklist: await this.BlackList(accountID),
+            receivedReq: await this.ReceivedReq(accountID),
+            sentReq: await this.SentReq(accountID)
+        }
+        console.log(accountID)
+        return relations
+    }
 }
