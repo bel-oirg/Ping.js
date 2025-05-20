@@ -33,7 +33,7 @@ const RegisterRoute = (fastify, options, done) =>
                 throw new Error('Passwords do not match.')
             
             let errors = passValidator(password)
-            if (errors.length)
+            if (errors.length) //TODO maybe change it into errors only
                 throw new Error(errors)
         
             const users = await Account.create({

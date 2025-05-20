@@ -1,5 +1,5 @@
 import Fastify from 'fastify'
-import sequelize from './config/db.js';
+import pool from './config/db.js';
 
 const fastify = Fastify({
     logger: {
@@ -19,35 +19,42 @@ const fastify = Fastify({
 
 fastify.register(import ('@fastify/swagger'))
 fastify.register(import ('@fastify/swagger-ui'), {routePrefix: '/docs',})
-fastify.register(import ('./routes/register.js'))
-fastify.register(import ('./routes/login.js'))
-fastify.register(import ('./routes/login_verify.js'))
+// fastify.register(import ('./routes/register.js'))
+// fastify.register(import ('./routes/login.js'))
+// fastify.register(import ('./routes/login_verify.js'))
 fastify.register(import ('./routes/protected.js'))
-fastify.register(import ('./routes/login_42.js'))
-fastify.register(import ('./routes/login_google.js'))
+// fastify.register(import ('./routes/login_42.js'))
+// fastify.register(import ('./routes/login_google.js'))
 
-try
-{
-    await sequelize.authenticate();
-    await sequelize.sync();
+
+
+await pool.connect()
+.then(() => {
     console.log('[DB] connection is good')
-}
-catch(err)
-{
+})
+.catch((err) => {
     console.error('[DB] Unable to connect to db :', err);
-}
+})
+    
 
 
 const start = async () => {
     try
     {
-        fastify.listen({ port:3000 })
+        await fastify.listen({ port:3000 })
     }
     catch (err)
     {
         fastify.log.error(err)
+        await pool.end()
         process.exit(1)
     }
 }
+
+// process.on('SIGINT', async () => {
+//     console.log('hell yea ')
+//     await pool.end()
+//     process.exit(0)
+// })
 
 start()
