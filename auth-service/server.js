@@ -1,5 +1,6 @@
 import Fastify from 'fastify'
 import pool from './config/db.js';
+import fs from 'fs'
 
 const fastify = Fastify({
     logger: {
@@ -19,9 +20,9 @@ const fastify = Fastify({
 
 fastify.register(import ('@fastify/swagger'))
 fastify.register(import ('@fastify/swagger-ui'), {routePrefix: '/docs',})
-// fastify.register(import ('./routes/register.js'))
-// fastify.register(import ('./routes/login.js'))
-// fastify.register(import ('./routes/login_verify.js'))
+fastify.register(import ('./routes/register.js'))
+fastify.register(import ('./routes/login.js'))
+fastify.register(import ('./routes/login_verify.js'))
 fastify.register(import ('./routes/protected.js'))
 // fastify.register(import ('./routes/login_42.js'))
 // fastify.register(import ('./routes/login_google.js'))
@@ -41,6 +42,8 @@ await pool.connect()
 const start = async () => {
     try
     {
+        const query = fs.readFileSync('./config/Account.sql', 'utf-8')
+        pool.query(query)
         await fastify.listen({ port:3000 })
     }
     catch (err)

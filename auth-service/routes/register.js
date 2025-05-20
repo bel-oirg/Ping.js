@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import Account from '../models/Account.js'
+import pool from '../config/db.js'
 
 
 const RegisterRoute = (fastify, options, done) =>
@@ -35,14 +35,11 @@ const RegisterRoute = (fastify, options, done) =>
             let errors = passValidator(password)
             if (errors.length) //TODO maybe change it into errors only
                 throw new Error(errors)
+
+            
+            const tvals = [username , email, await bcrypt.hash(password, 10), first_name, last_name]
         
-            const users = await Account.create({
-                username: username,
-                email: email,
-                password: await bcrypt.hash(password, 10),
-                first_name: first_name,
-                last_name: last_name,
-            })
+            await pool.query('INSERT INTO account(username, email, pass, first_name, last_name) VALUES($1, $2, $3, $4, $5);', tvals)
             res.status(201).send({Success : 'true'})
         }
         catch(err)
@@ -95,8 +92,8 @@ const RegisterRoute = (fastify, options, done) =>
     fastify.post('/register', registerSchema)
 
     fastify.get('/all', async (req, res) => {
-        const users = await Account.findAll()
-        res.send(JSON.stringify(users, null, 2))
+        const users = await pool.query('SELECT * FROM account')
+        res.send(JSON.stringify(users.rows, null, 2))
     })
 
     done()

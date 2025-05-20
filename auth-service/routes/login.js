@@ -1,4 +1,4 @@
-import Account from '../models/Account.js'
+import pool from '../config/db.js'
 import bcrypt from 'bcrypt'
 
 
@@ -7,18 +7,15 @@ const auth = (fastify, options, done) => {
     const loginHandler = async (req, res) => {
         const {username, password} = req.body
 
-        const user = await Account.findOne({where :{username : username}})
-        if (!user)
+        const user = await pool.query('SELECT id, is_oauth, pass FROM account WHERE username = $1;', [username])
+        if (!user.rows.length)
             return res.status(401).send({Success: 'false', Error: 'User does not exist'})
-        if (user.is_oauth)
-            return res.status(401).send({Success: 'false', Error: 'Use Oauth to login'})
-
-        const match = await bcrypt.compare(password, user.password);
-        if (!match)
-            return res.status(401).send({Success: 'false', Error: 'Incorrect Password'})
-
+        //INFO the oauth user cannot login cause the schema checks on minLenght on password
+        const is_match = await bcrypt.compare(password, user.rows[0].pass)
+        if (!is_match)
+            return res.status(401).send({Success: 'false', Error: 'Incorrect Password'})         
+        
         const token = fastify.jwt.sign({id: user.id})
-
         res.status(200).send({Success: 'true', token:token})
     }
 
@@ -62,8 +59,7 @@ const auth = (fastify, options, done) => {
         res.send(await Account.findAll())
     })
 
-    
-    done() //async ?
+    done()
 }
 
 export default auth

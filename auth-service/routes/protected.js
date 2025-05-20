@@ -7,7 +7,7 @@ export default async function(fastify, opts) {
         //     onRequest: [fastify.authenticate]
         // },
         async function(request, reply) {
-            return pool.query('SELECT NOW()')
+            return pool.query('SELECT * FROM account')
         }
     )
 }
