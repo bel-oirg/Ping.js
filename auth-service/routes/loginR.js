@@ -1,23 +1,13 @@
 import pool from '../config/db.js'
-import bcrypt from 'bcrypt'
+import loginC from '../controllers/loginC.js'
 
 
 const auth = (fastify, options, done) => {
 
-    const loginHandler = async (req, res) => {
-        const {username, password} = req.body
 
-        const user = await pool.query('SELECT id, is_oauth, pass FROM account WHERE username = $1 AND is_oauth = false;', [username])
-        if (!user.rows.length)
-            return res.status(401).send({Success: 'false', Error: 'User does not exist'})
-        //INFO the oauth user cannot login cause the schema checks on minLenght on password
-        const is_match = await bcrypt.compare(password, user.rows[0].pass)
-        if (!is_match)
-            return res.status(401).send({Success: 'false', Error: 'Incorrect Password'})         
-        
-        const token = fastify.jwt.sign({id: user.id})
-        res.status(200).send({Success: 'true', token:token})
-    }
+    fastify.register(import ('@fastify/jwt'),
+    {secret: process.env.JWT_SECRET,
+    sign: {expiresIn:'4h'}})
 
     const loginSchema = {
         schema:
@@ -50,7 +40,7 @@ const auth = (fastify, options, done) => {
                 }
             }
         },
-        handler: loginHandler
+        handler: loginC(fastify)
     }
 
     fastify.post('/login', loginSchema)
