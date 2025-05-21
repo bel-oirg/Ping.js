@@ -4,6 +4,8 @@ import fs from 'fs'
 import path from 'path'
 import pool from '../config/db.js'
 
+const DEFAULT_AVATAR = path.join(process.cwd(), 'media', 'avatar', 'default_avatar.jpg')
+
 const oauth2google = (fastify, options, done) => {
 
 
@@ -28,7 +30,6 @@ const oauth2google = (fastify, options, done) => {
             })
 
             const user_json = await ticket.getPayload()
-            console.log(user_json)
 
             const try_login = await pool.query('SELECT id FROM account WHERE username = $1 AND email = $2 AND is_oauth = $3', [user_json.name, user_json.email, true])
             if (try_login.rows[0])
@@ -65,10 +66,8 @@ const oauth2google = (fastify, options, done) => {
                 })
             })
 
-
             const new_user = [user_json.name, user_json.email, 'R3ndom789KEPLERliok',user_json.given_name, user_json.family_name, true, file_path]
             const created_user = await pool.query('INSERT INTO account(username, email, pass, first_name, last_name, is_oauth, avatar) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id;', new_user)
-
 
             const token = fastify.jwt.sign({user_id:created_user.rows[0].id})
             return res.status(200).send({Success: true, token: token})

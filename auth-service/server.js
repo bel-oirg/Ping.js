@@ -42,8 +42,8 @@ await pool.connect()
 const start = async () => {
     try
     {
-        const query = fs.readFileSync('./config/Account.sql', 'utf-8')
-        pool.query(query)
+        const query = fs.readFileSync('./models/Account.sql', 'utf-8')
+        await pool.query(query)
         await fastify.listen({ port:3000 })
     }
     catch (err)

@@ -1,12 +1,12 @@
 import pool from '../config/db.js'
 
-export default async function(fastify, opts) {
+export default async function(fastify) {
     fastify.get(
         "/pp",
         // {
         //     onRequest: [fastify.authenticate]
         // },
-        async function(request, reply) {
+        async () => {
             return pool.query('SELECT * FROM account')
         }
     )
