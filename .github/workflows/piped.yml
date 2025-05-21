@@ -13,9 +13,9 @@ jobs:
           node-version: '20.x'
         
       - name: install deps
-          run: npm ci
-          working-directory: auth-service
+        run: npm ci
+        working-directory: auth-service
       
       - name: Lint check
-          run: npm run lint
-          working-directory: auth-serice
+        run: npm run lint
+        working-directory: auth-serice
