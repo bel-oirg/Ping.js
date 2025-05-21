@@ -1,0 +1,6 @@
+docker run --name my_pg \
+  -e POSTGRES_USER=buddha \
+  -e POSTGRES_PASSWORD=buddha \
+  -e POSTGRES_DB=mydb \
+  -p 5999:5432 \
+  -d postgres:15

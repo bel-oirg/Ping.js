@@ -5,14 +5,14 @@ export default fp((fastify, opts, done) => {
     {secret: process.env.JWT_SECRET,
         sign: {expiresIn:'4h'}})
 
-    fastify.decorate("authenticate", async function(request, reply) {
+    fastify.decorate("authenticate", async function(request, res) {
         try
         {
             await request.jwtVerify()
         }
         catch (err)
         {
-            reply.send(err)
+            res.send(err)
         }
     })
     done()
