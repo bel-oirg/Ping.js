@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS Account(
     first_name VARCHAR(30),
     last_name VARCHAR(30),
     pass TEXT NOT NULL,
-    is_oauth BOOLEAN DEFAULT FALSE
+    is_oauth BOOLEAN DEFAULT FALSE,
+    avatar VARCHAR(120)
 )

@@ -7,7 +7,7 @@ const auth = (fastify, options, done) => {
     const loginHandler = async (req, res) => {
         const {username, password} = req.body
 
-        const user = await pool.query('SELECT id, is_oauth, pass FROM account WHERE username = $1;', [username])
+        const user = await pool.query('SELECT id, is_oauth, pass FROM account WHERE username = $1 AND is_oauth = false;', [username])
         if (!user.rows.length)
             return res.status(401).send({Success: 'false', Error: 'User does not exist'})
         //INFO the oauth user cannot login cause the schema checks on minLenght on password

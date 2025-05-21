@@ -1,8 +1,6 @@
-import Account from '../models/Account.js'
 import https from 'https'
 import fs from 'fs'
 import path from 'path'
-import {Op} from 'sequelize'
 import pool from '../config/db.js'
 
 const DEFAULT_AVATAR = path.join(process.cwd(), 'media', 'avatar', 'default_avatar.jpg')
@@ -29,7 +27,7 @@ const oauth42 = (fastify, options, done) => {
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 })
             if (!raw.ok)
-                throw new Error(`${raw.status}`)
+                throw new Error(`[-] RAW ${raw.status}`)
             
             const user_creds =  await raw.json()
             
@@ -38,24 +36,20 @@ const oauth42 = (fastify, options, done) => {
             })
             
             if (!user_data.ok)
-                throw new Error(`${user_data.status}`)
+                throw new Error(`[-] USER DATA ${user_data.status}`)
             
             const user_json =  await user_data.json()
-
-            // const try_login = await Account.findOne({ where : {username : user_json.login,
-            //                                                    email : user_json.email,
-            //                                                    is_oauth: true}})
+            
             const lvalues = [user_json.login, user_json.email]
-            const try_login = await pool.query('SELECT id from account WHERE username = $1 and email = $2 and is_oauth = True', lvalues).rows[0]
-            if (try_login)
+            let try_login = await pool.query('SELECT id FROM account WHERE username = $1 AND email = $2 AND is_oauth = true', lvalues)
+            
+            if (try_login.rows[0])
             {
-                const token = fastify.jwt.sign({user_id:try_login.id})
+                const token = fastify.jwt.sign({user_id: try_login.rows[0].id})
                 return res.status(200).send({Success: true, token: token})
             }
 
-            // const search = await Account.findOne({ where : { [Op.or] : [
-            //     {username : user_json.login}, {email : user_json.email }] }})
-            const search = pool.query('SELECT EXISTS(SELECT 1 FROM account WHERE username = $1 OR email = $2', lvalues)
+            const search = await pool.query('SELECT EXISTS(SELECT 1 FROM account WHERE username = $1 OR email = $2);', lvalues)
             
             if (search.rows[0].exists)
                 return res.status(409).send({Success: false, Error: 'Your username/email is not unique'})
@@ -83,17 +77,8 @@ const oauth42 = (fastify, options, done) => {
                 })
             })
 
-            // const created_user = await Account.create({
-            //     username:user_json.login,
-            //     email:user_json.email,
-            //     first_name:user_json.first_name,
-            //     last_name:user_json.last_name,
-            //     is_oauth: true,
-            //     avatar: file_path
-            // })
-            const new_user = [user_json.login, user_json.email, user_json.first_name, user_json.last_name, true, file_path]
-            const created_user = await pool.query('INSERT INTO account(username, email, pass, first_name, last_name) VALUES($1, $2, $3, $4, $5) RETURNING id;', new_user)
-
+            const new_user = [user_json.login, user_json.email, 'R3ndom789KEPLERliok',user_json.first_name, user_json.last_name, true, file_path]
+            const created_user = await pool.query('INSERT INTO account(username, email, pass, first_name, last_name, is_oauth, avatar) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id;', new_user)
             const token = fastify.jwt.sign({user_id:created_user.rows[0].id})
             return res.status(200).send({Success: true, token: token})
         }
