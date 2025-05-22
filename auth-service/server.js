@@ -1,6 +1,9 @@
 import Fastify from 'fastify'
 import pool from './config/db.js';
 import fs from 'fs'
+import setupdb from './config/setupDB.js';
+
+await setupdb()
 
 const fastify = Fastify({
     logger: {
@@ -28,7 +31,7 @@ fastify.register(import ('./routes/intraR.js'))
 fastify.register(import ('./routes/googleR.js'))
 
 
-
+// checking db connection
 await pool.connect()
 .then(() => {
     console.log('[DB] connection is good')
@@ -36,28 +39,37 @@ await pool.connect()
 .catch((err) => {
     console.error('[DB] Unable to connect to db :', err);
 })
-    
 
+//loading the models
+try{
 
+    const query = fs.readFileSync('./models/Account.sql', 'utf-8')
+    // await pool.query(query)
+}
+catch(err)
+{
+    fastify.log.error(err)
+    // await pool.end()
+    process.exit(1) 
+}
+
+//run the server
 const start = async () => {
     try
     {
-        const query = fs.readFileSync('./models/Account.sql', 'utf-8')
-        await pool.query(query)
         await fastify.listen({ port:3000 })
     }
     catch (err)
     {
         fastify.log.error(err)
-        await pool.end()
+        // await pool.end()
         process.exit(1)
     }
 }
 
-// process.on('SIGINT', async () => {
-//     console.log('hell yea ')
-//     await pool.end()
-//     process.exit(0)
-// })
+// await pool.end()
 
-start()
+// if (process.env.DB_ENV !== 'test') start()
+// await pool.end()
+
+export default fastify

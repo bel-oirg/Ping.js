@@ -52,29 +52,12 @@ const oauth2google = (fastify, options, done) => {
             access_type: 'offline',
             scope: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email']
         })
-
+        
+        //https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code&client_id=373713270678-0dro9nrh86tlpcse6a4bia0ssf296o8m.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Foauth%2Fgoogle%2F
         res.redirect(authURL)
     })
 
     done()
 }
-
-/**
- * {
-  iss: 'https://accounts.google.com',
-  azp: '373713270678-0dro9nrh86tlpcse6a4bia0ssf296o8m.apps.googleusercontent.com',
-  aud: '373713270678-0dro9nrh86tlpcse6a4bia0ssf296o8m.apps.googleusercontent.com',
-  sub: '100845670125144447963',
-  email: 'butgha91826@gmail.com',
-  email_verified: true,
-  at_hash: '67Omv-_J7jS8D8T9-1lGew',
-  name: 'Slayer Badre II',
-  picture: 'https://lh3.googleusercontent.com/a/ACg8ocLc25B6tPSVUUtGeq6Twiosmyf91OgVqOvhEympDON-oBqKv-s=s96-c',
-  given_name: 'Slayer',
-  family_name: 'Badre II',
-  iat: 1746814427,
-  exp: 1746818027
-    } 
- */
 
 export default oauth2google
