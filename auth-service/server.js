@@ -44,7 +44,7 @@ await pool.connect()
 try{
 
     const query = fs.readFileSync('./models/Account.sql', 'utf-8')
-    // await pool.query(query)
+    await pool.query(query)
 }
 catch(err)
 {
@@ -62,14 +62,11 @@ const start = async () => {
     catch (err)
     {
         fastify.log.error(err)
-        // await pool.end()
+        await pool.end()
         process.exit(1)
     }
 }
 
-// await pool.end()
-
-// if (process.env.DB_ENV !== 'test') start()
-// await pool.end()
+start()
 
 export default fastify
