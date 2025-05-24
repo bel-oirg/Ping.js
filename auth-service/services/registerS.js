@@ -32,7 +32,7 @@ const registerS = async (username , email, password, repassword, first_name, las
     
     const tvals = [username , email, await bcrypt.hash(password, 10), first_name, last_name]
     
-    await pool.query('INSERT INTO account(username, email, pass, first_name, last_name) VALUES($1, $2, $3, $4, $5);', tvals)
+    await pool.query('INSERT INTO account(username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5);', tvals)
 }
 
 export default registerS

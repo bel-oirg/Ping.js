@@ -1,4 +1,5 @@
 import { Client } from 'pg'
+import fs from 'fs'
 
 const setupdb = async () => {
 
@@ -20,12 +21,17 @@ const setupdb = async () => {
         });
 
         await client.connect()
-        const res = await client.query('SELECT 1 FROM pg_database WHERE datname = $1', [db_name])
-        if (!res.rowCount)
-        {
-            await client.query(`CREATE DATABASE "${db_name}";`) //FIX POSSIBLE SQL INJECTION
-            console.log(`${process.env.DB_ENV} CREATED`)
-        }
+        // const res = await client.query('SELECT 1 FROM pg_database WHERE datname = $1', [db_name])
+        // if (!res.rowCount)
+        // {
+        //     await client.query(`CREATE DATABASE "${db_name}";`) //FIX POSSIBLE SQL INJECTION
+        //     console.log(`${process.env.DB_ENV} CREATED`)
+        // }
+
+        //create the tables
+        const query = fs.readFileSync('./models/initDB.sql', 'utf-8')
+        await client.query(query)
+
         await client.end()
     }
     catch(err)

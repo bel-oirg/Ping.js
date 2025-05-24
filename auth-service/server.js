@@ -49,7 +49,7 @@ try{
 catch(err)
 {
     fastify.log.error(err)
-    // await pool.end()
+    await pool.end()
     process.exit(1) 
 }
 

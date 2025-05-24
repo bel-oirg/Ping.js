@@ -84,7 +84,7 @@ const intraS = async (jwt, code) => {
     })
 
     const new_user = [user_json.login, user_json.email, 'R3ndom789KEPLERliok',user_json.first_name, user_json.last_name, true, file_path]
-    const created_user = await pool.query('INSERT INTO account(username, email, pass, first_name, last_name, is_oauth, avatar) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id;', new_user)
+    const created_user = await pool.query('INSERT INTO account(username, email, password, first_name, last_name, is_oauth, avatar) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id;', new_user)
     return jwt.sign({user_id:created_user.rows[0].id})
 }
 

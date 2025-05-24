@@ -7,7 +7,7 @@
     "start": "node server",
     "dev": "cross-env DB_ENV=dev nodemon --env-file=./config/.env server",
     "lint": "eslint .",
-    "test": "cross-env DB_ENV=test mocha"
+    "test": "cross-env DB_ENV=test jest"
   },
   "keywords": [],
   "author": "",
@@ -26,11 +26,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
-    "chai": "^5.2.0",
-    "chai-http": "^5.1.2",
     "cross-env": "^7.0.3",
     "eslint": "^9.27.0",
-    "globals": "^16.1.0",
-    "mocha": "^11.4.0"
+    "globals": "^16.1.0"
   }
 }
