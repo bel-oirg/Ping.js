@@ -1,7 +1,7 @@
 import https from 'https'
 import fs from 'fs'
 import path from 'path'
-import pool from '../config/db.js'
+import pool from '../config/pooling.js'
 
 const DEFAULT_AVATAR = path.join(process.cwd(), 'media', 'avatar', 'default_avatar.jpg')
 

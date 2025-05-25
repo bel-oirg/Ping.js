@@ -41,6 +41,7 @@ export default
     async AllRelationsC(req, res){
         try
         {
+            console.log(req.user.id)
             const relations =  await URServices.AllRelations(req.user.id)
             res.status(200).send(relations)
         }

@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node server",
-    "dev": "cross-env DB_ENV=dev nodemon --env-file=./config/.env server",
-    "lint": "eslint .",
-    "test": "cross-env DB_ENV=test jest"
+    "dev": "cross-env db_name=authdb nodemon --env-file=./config/.env server",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",

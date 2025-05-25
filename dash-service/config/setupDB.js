@@ -32,14 +32,15 @@ const setupdb = async (db_name) => {
 
         await client2.connect()
     
-        const query = fs.readFileSync('./models/initDB.sql', 'utf-8')
+
+        const query = fs.readFileSync('./models/DashTables.sql', 'utf-8')
         await client2.query(query)
         await client2.end()
-        console.log('[DB] init done')
+        console.log('[DB-DASH] init done')
     }
     catch(err)
     {
-        console.log(`[DB] ${err}`)
+        console.log(`[DB-DASH] ${err}`)
         process.exit(1)
     }
 }

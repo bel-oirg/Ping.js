@@ -1,4 +1,4 @@
-import pool from '../config/db.js'
+import pool from '../config/pooling.js'
 import loginC from '../controllers/loginC.js'
 
 

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
-import pool from '../config/db.js'
+import pool from '../config/pooling.js'
+import {Client} from 'pg'
 
 function passValidator (password) {
     let errors = []
@@ -32,7 +33,21 @@ const registerS = async (username , email, password, repassword, first_name, las
     
     const tvals = [username , email, await bcrypt.hash(password, 10), first_name, last_name]
     
-    await pool.query('INSERT INTO account(username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5);', tvals)
+    const id = await pool.query('INSERT INTO account(username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5) RETURNING id;', tvals)
+    
+    
+    //TMP FOR CREATING THE USER
+    const player = new Client({
+        user: 'buddha',
+        host: 'localhost',
+        password: 'buddha',
+        port: 5999,
+        database: 'dashdb'
+    })
+    await player.connect()
+    tvals.unshift(id.rows[0].id)
+    await player.query('INSERT INTO player(id, username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5, $6);', tvals)
+    await player.end()
 }
 
 export default registerS

@@ -1,10 +1,10 @@
-import pool from '../config/db.js'
+import pool from '../config/pooling.js'
 
 export default {
     async SendReq(accountID, otherID) {
 
         // const receiver = await models.Account.findByPk(otherID)
-        const receiver = await pool.query('SELECT EXISTS(SELECT 1 FROM account WHERE id = $1);', [otherID])
+        const receiver = await pool.query('SELECT EXISTS(SELECT 1 FROM player WHERE id = $1);', [otherID])
         if (!receiver.rows[0].exists)
         {
             const err = new Error("Account not found")
@@ -24,9 +24,9 @@ export default {
         //         {SenderKEY:otherID, ReceiverKEY:accountID},
         //         {SenderKEY:accountID, ReceiverKEY:otherID}
         //     ] } } )
-        const fr_k = [accountID, otherID]
-        const fr_k2 = [otherID, accountID] //you can use reverse
-        const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE fr_keys = $1 OR fr_keys = $2', [fr_k, fr_k2])
+        console.log(accountID, otherID)
+        const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
+            WHERE (sender = $1 AND receiver = $2) OR (sender = $2 AND receiver = $1))', [accountID, otherID])
 
         if (relation.rows[0].exists)
         {
@@ -34,15 +34,19 @@ export default {
             err.code = 400
             throw err
         }
+        console.log(accountID, otherID)
             
         // await models.Friends.create({SenderKEY:accountID, ReceiverKEY:otherID})
-        await pool.query('INSERT INTO friends(sender, receiver) WHERE VALUES($1, $2)', [accountID, otherID])
+        console.log('BFENDKSAJNJDKSAN')
+        await pool.query('INSERT INTO friends(sender, receiver) VALUES($1, $2);', [accountID, otherID])
+        console.log('748386483276447')
     },
 
     async AcceptReq(accountID, otherID) {
 
         // const sender = await models.Account.findByPk(otherID)
-        const sender = await pool.query('SELECT EXISTS(SELECT 1 FROM account WHERE id = $1', [otherID])
+        const sender = await pool.query('SELECT EXISTS(SELECT 1 FROM player WHERE      \
+            id = $1)', [otherID])
         if (!sender.rows[0].exists)
         {
             const err = Error('Account not found')
@@ -53,7 +57,8 @@ export default {
         // const relation = await models.Friends.findOne({ where :
         //     {SenderKEY:otherID, ReceiverKEY:accountID, status:'pending'}})
 
-        const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])
+        const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE    \
+            sender = $1 AND receiver = $2 AND status = $3)', [otherID, accountID, 0])
 
         if (!relation.rows[0].exists)
         {
@@ -63,14 +68,16 @@ export default {
         }
             
         // await relation.update({status:'friends'})
-        await pool.query('UPDATE friends SET status = 1 WHERE sender = $1 AND receiver = $2', [otherID, accountID])
+        await pool.query('UPDATE friends SET status = 1     \
+            WHERE sender = $1 AND receiver = $2', [otherID, accountID])
 
     },
 
     async DenyReq(accountID, otherID)
     {
         // const sender = await models.Account.findByPk(otherID)
-        const sender = await pool.query('SELECT EXISTS(SELECT 1 FROM account WHERE id = $1', [otherID])
+        const sender = await pool.query('SELECT EXISTS(SELECT 1 FROM player    \
+            WHERE id = $1', [otherID])
 
         if (!sender.rows[0].exists)
         {
@@ -82,7 +89,8 @@ export default {
         // const relation = await models.Friends.findOne({ where :
         //     {SenderKEY:otherID, ReceiverKEY:accountID, status:'pending'}})
 
-        const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])
+        const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE    \
+            sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])
 
         if (!relation.rows[0].exists)
         {
@@ -93,7 +101,8 @@ export default {
 
         // await relation.destroy()
 
-        await pool.query('DELETE FROM friends WHERE sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])
+        await pool.query('DELETE FROM friends WHERE     \
+            sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])
 
         // res.send(await models.Friends.findAll())
     },
@@ -103,7 +112,8 @@ export default {
         // const relation = await models.Friends.findAll({ where :
         //     {ReceiverKEY:accountID, status:'pending'}})
 
-        const relation = await pool.query('SELECT sender FROM friends WHERE receiver = $1 AND status = $2', [accountID, 0])
+        const relation = await pool.query('SELECT sender FROM friends WHERE     \
+            receiver = $1 AND status = $2', [accountID, 0])
 
 
         return (relation.rows)
@@ -114,7 +124,8 @@ export default {
         // const relation = await models.Friends.findAll({ where :
         //     {SenderKEY:accountID, status:'pending'}})
 
-        const relation = await pool.query('SELECT receiver FROM friends WHERE sender = $1 AND status = $2', [accountID, 0])
+        const relation = await pool.query('SELECT receiver FROM friends     \
+            WHERE sender = $1 AND status = $2', [accountID, 0])
         
 
         return (relation.rows)
@@ -131,8 +142,9 @@ export default {
         //     }
         // })
 
-        const relation = await pool.query('SELECT fr_pkeys FROM friends WHERE (sender = $1 OR receiver = $1) AND status = $2', [accountID, 1])
-
+        const relation = await pool.query('SELECT sender, receiver FROM friends     \
+            WHERE (sender = $1 OR receiver = $2) AND status = $3', [accountID,accountID,  1])
+        // console.log('dsajdasnkdnaskndskajndkasnd')
         return (relation.rows)
     },
 
@@ -142,9 +154,10 @@ export default {
         //             {SenderKEY:accountID, status:'blocked'},
         // })
 
-        const relation = await pool.query('SELECT receiver FROM friends WHERE sender = $1 AND status = $2', [accountID, -1])
+        const relation = await pool.query('SELECT receiver FROM friends     \
+            WHERE sender = $1 AND status = $2', [accountID, -1])
 
-        return (relation)
+        return (relation.rows)
     },
 
     async AllRelations(accountID)
@@ -155,7 +168,6 @@ export default {
             receivedReq: await this.ReceivedReq(accountID),
             sentReq: await this.SentReq(accountID)
         }
-        console.log(accountID)
         return relations
     }
 }
