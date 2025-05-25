@@ -4,6 +4,7 @@ import display_profile from "../services/profilesS.js"
 const profilesC = async (req, res) => {
     try
     {
+        console.log(req.user.id, req.query['id'])
         const data = await display_profile(req.query['id'], req.user.id)
         res.status(200).send({Success:true, data})
     }
