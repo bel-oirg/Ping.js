@@ -33,7 +33,7 @@ const setupdb = async (db_name) => {
         await client2.connect()
     
 
-        const query = fs.readFileSync('./models/DashTables.sql', 'utf-8')
+        const query = fs.readFileSync('./models/dashTables.sql', 'utf-8')
         await client2.query(query)
         await client2.end()
         console.log('[DB-DASH] init done')

@@ -12,10 +12,18 @@ jobs:
         with:
           node-version: '20.x'
         
-      - name: install deps
+      - name: install deps on auth-service
         run: npm ci
         working-directory: auth-service
       
-      - name: Lint check
+      - name: Lint check on auth-service
         run: npm run lint
         working-directory: auth-service
+      
+      - name: install deps on dash-service
+        run: npm ci
+        working-directory: dash-service
+
+      - name: Lint check on dash-service
+        run: npm run lint
+        working-directory: dash-service
