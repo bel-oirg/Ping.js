@@ -14,6 +14,7 @@ const appBuilder = async () => {
 
     fastify.register(import ('./routes/login_verify.js'))
     fastify.register(import ('./routes/URR.js'))
+    fastify.register(import ('./routes/profilesR.js'))
 
     return fastify
 }

@@ -25,16 +25,3 @@ CREATE TABLE IF NOT EXISTS friends(
     status INT DEFAULT 0,
     CONSTRAINT fr_pkey PRIMARY KEY (sender, receiver)
 );
-
-
--- SELECT EXISTS(SELECT 1 FROM friends      
---             WHERE (sender = 3 AND receiver = 2) OR (sender = 2 AND receiver = 3))
-
-
--- INSERT INTO friends(sender, receiver) VALUES(1, 2);
-
--- SELECT sender FROM friends WHERE receiver = 2 AND status = 0
-
--- SELECT receiver FROM friends WHERE sender = 3 AND status = 0
-
--- INSERT INTO player(id, username, email, password, first_name, last_name) VALUES(22, 'das', 'dsadsa', 'dsadsa', 'das', 'dsa')

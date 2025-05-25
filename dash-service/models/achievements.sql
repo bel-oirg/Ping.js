@@ -23,5 +23,9 @@ VALUES
   (12, 'PingPongLegend', 'Win 10 ping-pong matches.', 10000, 10, 'PingPongLegend');
 
 
-
-  
+CREATE TABLE IF NOT EXISTS user_chiev(
+  user_id INT REFERENCES player(id),
+  achievement_id INT REFERENCES achievements(id),
+  parts INT DEFAULT 1,
+  CONSTRAINT pk PRIMARY KEY (user_id, achievement_id)
+)

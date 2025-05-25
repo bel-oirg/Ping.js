@@ -2,10 +2,10 @@ CREATE TABLE IF NOT EXISTS levels (
   id SERIAL PRIMARY KEY,
   min_experience INTEGER NOT NULL,
   max_experience INTEGER NOT NULL,
-  reward INTEGER NOT NULL,
+  reward INTEGER NOT NULL
 );
 
-INSERT INTO ranks (id, min_experience, max_experience, reward)
+INSERT INTO levels (id, min_experience, max_experience, reward)
 VALUES 
   (1, 0, 200, 150),
   (2, 200, 400, 250),
