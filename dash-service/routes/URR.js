@@ -2,28 +2,12 @@ import URController from '../controllers/URC.js'
 
 const createFriend = (fastify, options, done) => {
 
-    fastify.get('/send-req',
-        {
-            onRequest: [fastify.authenticate]
-        }
-        ,URController.SendReqC
-    )
-
-    fastify.get('/accept-req',
-        {
-            onRequest: [fastify.authenticate]
-        },URController.AcceptReqC)
-
-
-    fastify.get('/deny-req',
-        {
-            onRequest: [fastify.authenticate]
-        }
-        ,URController.DenyReqC)
-
-    fastify.get('/all-relations',
-        {onRequest: [fastify.authenticate]},
-        URController.AllRelationsC)
+    fastify.get('/send-req/' ,URController.SendReqC)
+    fastify.get('/accept-req/' ,URController.AcceptReqC)
+    fastify.get('/deny-req/', URController.DenyReqC)
+    fastify.get('/all-relations/', URController.AllRelationsC)
+    fastify.get('/unfriend/', URController.unfriendC)
+    fastify.get('/cancel/', URController.cancelMyReqC)
 
     done()
 }

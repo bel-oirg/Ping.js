@@ -9,10 +9,14 @@ const appBuilder = async () => {
         logger: {
             transport: { target: 'pino-pretty',
             options: { translateTime: 'HH:MM:ss Z', ignore: 'pid,hostname,reqId',
-                messageFormat: '{msg} {req.method} {req.url}',
-                levelFirst: true, colorize: true,singleLine: true,}}}})
+            messageFormat: '{msg} {req.method} {req.url}',
+            levelFirst: true, colorize: true, singleLine: true,}}}})
 
-    fastify.register(import ('./routes/login_verify.js'))
+    fastify.register(import ('@fastify/jwt'),
+    {secret: process.env.JWT_SECRET, sign: {expiresIn:'4h'}})
+
+    fastify.addHook('onRequest', async (req) => { await req.jwtVerify() })
+
     fastify.register(import ('./routes/URR.js'))
     fastify.register(import ('./routes/profilesR.js'))
 

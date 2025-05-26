@@ -5,30 +5,14 @@ export default {
 
         const receiver = await pool.query('SELECT EXISTS(SELECT 1 FROM player WHERE id = $1);', [otherID])
         if (!receiver.rows[0].exists)
-        {
-            const err = new Error("Account not found")
-            err.code = 400
-            throw err
-        }
-
-        if (otherID == accountID)
-        {
-            const err = new Error("You can not send req to yourself")
-            err.code = 400
-            throw err
-        }
+            throw new Error("Account not found")
 
         console.log(accountID, otherID)
         const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
             WHERE (sender = $1 AND receiver = $2) OR (sender = $2 AND receiver = $1))', [accountID, otherID])
 
         if (relation.rows[0].exists)
-        {
-            const err = new Error("The Current relation, does not allow sending new request")
-            err.code = 400
-            throw err
-        }
-        console.log(accountID, otherID)
+            throw new Error("The Current relation, does not allow sending new request")
             
         await pool.query('INSERT INTO friends(sender, receiver) VALUES($1, $2);', [accountID, otherID])
     },
@@ -38,21 +22,13 @@ export default {
         const sender = await pool.query('SELECT EXISTS(SELECT 1 FROM player WHERE      \
             id = $1)', [otherID])
         if (!sender.rows[0].exists)
-        {
-            const err = Error('Account not found')
-            err.code = 400
-            throw err
-        }
+            throw new Error('Account not found')
 
         const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE    \
             sender = $1 AND receiver = $2 AND status = $3)', [otherID, accountID, 0])
 
         if (!relation.rows[0].exists)
-        {
-            const err = Error('The relation, does not exist')
-            err.code = 400
-            throw err
-        }
+            throw new Error('The relation, does not exist')
             
         await pool.query('UPDATE friends SET status = 1     \
             WHERE sender = $1 AND receiver = $2', [otherID, accountID])
@@ -65,31 +41,38 @@ export default {
             WHERE id = $1)', [otherID])
 
         if (!sender.rows[0].exists)
-        {
-            const err = Error('Account not found')
-            err.code = 400
-            throw err
-        }
+            throw Error('Account not found')
 
         const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends WHERE    \
             sender = $1 AND receiver = $2 AND status = $3)', [otherID, accountID, 0])
 
         if (!relation.rows[0].exists)
-        {
-            const err = Error('The relation, does not exist')
-            err.code = 400
-            throw err
-        }
+            throw Error('The relation, does not exist')
 
         await pool.query('DELETE FROM friends WHERE     \
             sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])
+    },
+
+    async cancelMyReqS(accountID, otherID)
+    {
+        const q = await pool.query('DELETE FROM friends WHERE     \
+            sender = $1 AND receiver = $2 AND status = $3', [accountID, otherID, 0])
+
+        return q.rowCount
+    },
+    
+
+    async unfriendReq(accountID, otherID)
+    {
+        const relation = await pool.query('DELETE FROM friends WHERE  \
+            ((sender = $1 AND receiver = $2 ) OR (sender = $2 AND receiver = $1)) AND status = 1', [accountID, otherID])
+        return relation.rowCount
     },
 
     async ReceivedReq(accountID)
     {
         const relation = await pool.query('SELECT sender FROM friends WHERE     \
             receiver = $1 AND status = $2', [accountID, 0])
-
 
         return (relation.rows)
     },

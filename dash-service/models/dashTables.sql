@@ -25,3 +25,4 @@ CREATE TABLE IF NOT EXISTS friends(
     status INT DEFAULT 0,
     CONSTRAINT fr_pkey PRIMARY KEY (sender, receiver)
 );
+

@@ -45,12 +45,10 @@ const display_profile = async (id, req_id) => {
     let user_data = await pool.query('SELECT id, username, first_name, \
             last_name, avatar, background, bio, is_online, is_oauth, exp, rank, level \
             FROM player WHERE id = $1;', [id])
+    
     if (!user_data.rows.length)
-    {
-        const err = new Error('User does not exist')
-        err.code = 400
-        throw err
-    }
+        throw new Error('User does not exist')
+
     user_data = user_data.rows[0]
 
     const rank_data = await pool.query('SELECT name, min_exp, max_exp, \
@@ -60,9 +58,10 @@ const display_profile = async (id, req_id) => {
         reward FROM levels WHERE id = $1', [user_data.level])
 
     const relation = await relation_type(id, req_id)
+
     let friends = await URS.FriendList(id)
-    // console.log(friends)
     let fr_list = []
+    
     if (relation)
     {
         if (relation > 0) // HE DID SOMETHING
