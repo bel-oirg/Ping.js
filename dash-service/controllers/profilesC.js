@@ -6,7 +6,7 @@ const profilesC = async (req, res) => {
     {
         console.log(req.user.id, req.query['id'])
         const data = await display_profile(req.query['id'], req.user.id)
-        res.status(200).send({Success:true, data})
+        res.status(200).send(data)
     }
     catch(err)
     {
