@@ -33,5 +33,18 @@ CREATE TABLE IF NOT EXISTS user_achiev(
   user_id INT REFERENCES player(id),
   achievement_id INT REFERENCES achievements(id),
   parts INT DEFAULT 1,
-  CONSTRAINT pk PRIMARY KEY (user_id, achievement_id)
+  CONSTRAINT pk_Uachiev PRIMARY KEY (user_id, achievement_id)
 );
+
+
+
+
+
+
+
+-- SELECT achievements.id, achievements.title, 
+--             achievements.description, achievements.coin_reward, user_achiev.parts, 
+--             achievements.parts AS total_parts, 
+--             achievements.icon_path FROM achievements RIGHT JOIN user_achiev 
+--             ON achievements.id = user_achiev.achievement_id      
+--             WHERE user_achiev.user_id = 2
