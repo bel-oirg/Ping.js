@@ -1,4 +1,4 @@
-import URServices from '../services/URS.js'
+import URServices from '../services/relationsS.js'
 
 export default 
 {
@@ -59,6 +59,41 @@ export default
                 throw new Error('The relation does not exist')
             
             res.status(200).send({Success:true, 'msg':'Req Refused successfully'})
+        }
+        catch(err)
+        {
+            res.status(400).send({Success:false, Error:err.message})
+        }
+    },
+
+    async blockUserC(req, res){
+        try
+        {
+            if (req.user.id == req.query['id'])
+                throw new Error('You cannot cancel your own req')
+
+            await URServices.blockUser(req.user.id, req.query['id'])
+
+            res.status(200).send({Success:true, 'msg':'The user blocked successfully'})
+        }
+        catch(err)
+        {
+            res.status(400).send({Success:false, Error:err.message})
+        }
+    },
+
+    async unblockUserC(req, res){
+        try
+        {
+            if (req.user.id == req.query['id'])
+                throw new Error('You cannot cancel your own req')
+
+            const rowCount = await URServices.unblockUser(req.user.id, req.query['id'])
+
+            if (!rowCount)
+                throw new Error('The relation does not exist')
+            
+            res.status(200).send({Success:true, 'msg':'The user unblocked successfully'})
         }
         catch(err)
         {

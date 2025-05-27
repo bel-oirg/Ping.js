@@ -29,7 +29,7 @@ DO $$
   END
 $$;
 
-CREATE TABLE IF NOT EXISTS user_chiev(
+CREATE TABLE IF NOT EXISTS user_achiev(
   user_id INT REFERENCES player(id),
   achievement_id INT REFERENCES achievements(id),
   parts INT DEFAULT 1,

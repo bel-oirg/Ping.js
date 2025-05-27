@@ -1,5 +1,5 @@
 import pool from "../config/pooling.js"
-import URS from './URS.js'
+import URS from './relationsS.js'
 
 const status_types = {
     HE_SENT: 3,

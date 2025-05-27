@@ -7,7 +7,6 @@ export default {
         if (!receiver.rows[0].exists)
             throw new Error("Account not found")
 
-        console.log(accountID, otherID)
         const relation = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
             WHERE (sender = $1 AND receiver = $2) OR (sender = $2 AND receiver = $1))', [accountID, otherID])
 
@@ -59,6 +58,20 @@ export default {
             sender = $1 AND receiver = $2 AND status = $3', [accountID, otherID, 0])
 
         return q.rowCount
+    },
+
+    async blockUser(accountID, otherID)
+    {
+        await pool.query('INSERT INTO friends(sender, receiver, status) WHERE \
+            VALUES($1, $2, $3);', [accountID, otherID, -1])
+    },
+
+
+    async unblockUser(accountID, otherID)
+    {
+        const query = await pool.query('DELETE FROM friends WHERE  \
+            (sender = $1 AND receiver = $2 AND status = $3)', [accountID, otherID, -1])
+        return query.rowCount
     },
     
 

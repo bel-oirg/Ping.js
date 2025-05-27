@@ -17,7 +17,7 @@ const appBuilder = async () => {
 
     fastify.addHook('onRequest', async (req) => { await req.jwtVerify() })
 
-    fastify.register(import ('./routes/URR.js'))
+    fastify.register(import ('./routes/relationsR.js'))
     fastify.register(import ('./routes/profilesR.js'))
 
     return fastify
