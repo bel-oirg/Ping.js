@@ -1,8 +1,9 @@
-import profilesC from "../controllers/profilesC.js"
+import PC from "../controllers/profilesC.js"
 
 const profilesR = (fastify, options, done) => {
 
-    fastify.get('/get_card/', profilesC)
+    fastify.get('/get_card/', PC.profilesC)
+    fastify.get('/search/', PC.searchC)
     
     done()
 }

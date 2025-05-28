@@ -41,43 +41,52 @@ const relation_type = async (id, req_id) =>
     return 0
 }
 
-const display_profile = async (id, req_id) => {
-    let user_data = await pool.query('SELECT id, username, first_name, \
-            last_name, avatar, background, bio, is_online, is_oauth, exp, rank, level \
-            FROM player WHERE id = $1;', [id])
-    
-    if (!user_data.rows.length)
-        throw new Error('User does not exist')
+export default {
 
-    user_data = user_data.rows[0]
+    async display_profile(id, req_id) {
+        let user_data = await pool.query('SELECT id, username, first_name, \
+                last_name, avatar, background, bio, is_online, is_oauth, exp, rank, level \
+                FROM player WHERE id = $1;', [id])
+        
+        if (!user_data.rows.length)
+            throw new Error('User does not exist')
 
-    const rank_data = await pool.query('SELECT name, min_exp, max_exp, \
-        reward, icon_path FROM ranks WHERE id = $1', [user_data.rank])
+        user_data = user_data.rows[0]
 
-    const level_data = await pool.query('SELECT id, min_exp, max_exp, \
-        reward FROM levels WHERE id = $1', [user_data.level])
+        const rank_data = await pool.query('SELECT name, min_exp, max_exp, \
+            reward, icon_path FROM ranks WHERE id = $1', [user_data.rank])
 
-    const relation = await relation_type(id, req_id)
+        const level_data = await pool.query('SELECT id, min_exp, max_exp, \
+            reward FROM levels WHERE id = $1', [user_data.level])
 
-    let friends = await URS.FriendList(id)
-    let fr_list = []
-    
-    if (relation)
+        const relation = await relation_type(id, req_id)
+
+        let friends = await URS.FriendList(id)
+        let fr_list = []
+        
+        if (relation)
+        {
+            if (relation > 0) // HE DID SOMETHING
+                fr_list = friends.map((fr) => fr.sender)
+            else
+                fr_list = friends.map((fr) => fr.receiver)
+        }
+
+        return {
+            "User": user_data,
+            "Level": level_data.rows[0],
+            "Rank": rank_data.rows[0],
+            "Friends": fr_list,
+            "is_self": id == req_id,
+            "Friendship": relation
+        }
+    },
+
+    async searchS(username)
     {
-        if (relation > 0) // HE DID SOMETHING
-            fr_list = friends.map((fr) => fr.sender)
-        else
-            fr_list = friends.map((fr) => fr.receiver)
-    }
-
-    return {
-        "User": user_data,
-        "Level": level_data.rows[0],
-        "Rank": rank_data.rows[0],
-        "Friends": fr_list,
-        "is_self": id == req_id,
-        "Friendship": relation
+        const res = await pool.query("SELECT id, username FROM player WHERE \
+            username LIKE '%$1%' LIMIT 5;", [username])
+        return res.rows
     }
 }
 
-export default display_profile

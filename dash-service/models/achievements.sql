@@ -19,7 +19,6 @@ DO $$
         (4, 'ChatStarter', 'Send your first message to any friend in the in-game', 1000, 1, 'ChatStarter'),
         (5, 'RisingStarI', 'Win your first ping-pong match.', 2000, 1, 'RisingStarI'),
         (6, 'RisingStarII', 'Win 3 ping-pong matches.', 3000, 3, 'RisingStarII'),
-        (7, 'RisingStarIII', 'Win 5 ping-pong matches.', 4000, 5, 'RisingStarIII'),
         (8, 'SocialStar', 'Chat with two or more friends.', 5000, 2, 'SocialStar'),
         (9, 'TournamentChampionI', 'Win your first tournament.', 5000, 1, 'TournamentChampionI'),
         (10, 'TournamentChampionII', 'Win 3 tournaments.', 6000, 3, 'TournamentChampionII'),
@@ -36,15 +35,3 @@ CREATE TABLE IF NOT EXISTS user_achiev(
   CONSTRAINT pk_Uachiev PRIMARY KEY (user_id, achievement_id)
 );
 
-
-
-
-
-
-
--- SELECT achievements.id, achievements.title, 
---             achievements.description, achievements.coin_reward, user_achiev.parts, 
---             achievements.parts AS total_parts, 
---             achievements.icon_path FROM achievements RIGHT JOIN user_achiev 
---             ON achievements.id = user_achiev.achievement_id      
---             WHERE user_achiev.user_id = 2
