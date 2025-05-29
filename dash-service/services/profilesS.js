@@ -85,7 +85,7 @@ export default {
     async searchS(username)
     {
         const res = await pool.query("SELECT id, username FROM player WHERE \
-            username LIKE '%$1%' LIMIT 5;", [username])
+            username LIKE $1 LIMIT 5;", [`%${username}%`])
         return res.rows
     }
 }

@@ -2,11 +2,8 @@ import StoreC from '../controllers/storeC.js'
 
 const storeR = (fastify, options, done) => {
 
-    fastify.get('/store/avatars/' ,StoreC.avatars)
-    fastify.get('/store/emotes_packs/' ,StoreC.emotes_packs)
-    fastify.get('/store/backgrounds/' ,StoreC.backgrounds)
-
-    fastify.get('/store/buy/' ,StoreC.backgrounds)
+    fastify.post('/store/buy/' ,StoreC.buyC)
+    fastify.get('/store/list/' ,StoreC.list_inventoryC)
 
     done()
 }

@@ -92,60 +92,33 @@ DO $$
     END
 $$;
 
-CREATE TYPE IF NOT EXISTS ITEMTYPES AS ENUM('avatars', 'backgrounds', 'emotes_packs');
+
 
 
 CREATE TABLE IF NOT EXISTS inventory (
     user_id INT REFERENCES player(id),
     item_id INT NOT NULL,
-    item_type ITEMTYPES NOT NULL,
+    item_type INT NOT NULL,
     CONSTRAINT item_user PRIMARY KEY (user_id, item_id, item_type)
-)
+);
 
 
-SELECT id, username FROM player WHERE 
-            username LIKE '%s%' LIMIT 5;
+-- WITH item_price AS 
+--     (SELECT price from avatars WHERE id = 2),        
+    
+--     user_budget AS
+--         (SELECT budget FROM player WHERE id = 2),  
 
--- CREATE TABLE IF NOT EXISTS emotes (
---   id SERIAL PRIMARY KEY,
---   name VARCHAR(100) NOT NULL,
---   path VARCHAR(255) NOT NULL,
---   pack_id INTEGER NOT NULL
--- );
-
-
--- INSERT INTO emotes (id, name, path)
--- VALUES 
---   -- Geometry pack
---   (1, 'Trophy', 'data/emotes/geometry/trophy.png'),
---   (2, 'Demon', 'data/emotes/geometry/demon.png'),
---   (3, 'Demon Insane', 'data/emotes/geometry/demoninsane.png'),
---   (4, 'Demon Medium', 'data/emotes/geometry/demonmedium.png'),
---   (5, 'Moon', 'data/emotes/geometry/moon.png'),
---   (6, 'Star', 'data/emotes/geometry/star.png'),
---   (7, 'User Coin', 'data/emotes/geometry/usercoin.png'),
---   (8, 'Mod', 'data/emotes/geometry/mod.png'),
---   (9, 'Elder Mod', 'data/emotes/geometry/eldermod.png'),
---   (10, 'Creator Point', 'data/emotes/geometry/creatorpoint.png'),
---   (11, 'Demon Easy', 'data/emotes/geometry/demoneasy.png'),
---   (12, 'Demon Extreme', 'data/emotes/geometry/demonextreme.png'),
---   (13, 'Happy', 'data/emotes/geometry/happy.png'),
---   (14, 'Copy Paste', 'data/emotes/geometry/copypaste.png'),
---   (15, 'Golden Coin', 'data/emotes/geometry/goldencoin.png'),
-  
---   -- Luna pack
---   (16, 'Crying', 'data/emotes/luna/crying.png'),
---   (17, 'Curious', 'data/emotes/luna/curious.png'),
---   (18, 'Drinking', 'data/emotes/luna/drinking.png'),
---   (19, 'Praying', 'data/emotes/luna/praying.png'),
---   (20, 'Tired', 'data/emotes/luna/tired.png'),
---   (21, 'Hype', 'data/emotes/luna/hype.png'),
---   (22, 'Thinking', 'data/emotes/luna/thinking.png'),
-  
---   -- Sanrio pack
---   (23, 'Melody Plushie', 'data/emotes/sanrio/melody-plushie.png'),
---   (24, 'Pochacco Plushie', 'data/emotes/sanrio/pochacco-plushie.png'),
---   (25, 'Cinnamoroll Plushie', 'data/emotes/sanrio/cinnamoroll-plushie.png'),
---   (26, 'Hello Kitty Plushie', 'data/emotes/sanrio/hellokitty-plushie.png'),
---   (27, 'Kuromi Plushie', 'data/emotes/sanrio/kuromi-plushie.png'),
---   (28, 'Pompompurin Plushie', 'data/emotes/sanrio/pompompurin-plushie.png');
+--     legit_trans AS 
+--         (SELECT                          
+--             ((SELECT price from item_price) <= (SELECT budget FROM user_budget)) AS has_budget),
+    
+--     budget_update AS (
+--         UPDATE player SET budget = budget - (SELECT price from item_price) 
+--         WHERE
+--             id = 4 AND
+--             (SELECT has_budget FROM legit_trans)
+--         RETURNING (SELECT has_budget FROM legit_trans) AS success)
+--     INSERT INTO inventory(user_id, item_id, item_type) SELECT 1, 4, 2
+--     WHERE (SELECT success FROM budget_update) = true
+--     RETURNING (SELECT success FROM budget_update)

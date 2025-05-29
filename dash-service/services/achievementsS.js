@@ -48,7 +48,7 @@ export default {
         const all = await pool.query('SELECT achievements.id, achievements.title, \
             achievements.description, achievements.coin_reward, user_achiev.parts, \
             achievements.parts AS total_parts, \
-            achievements.icon_path FROM achievements RIGHT JOIN user_achiev \
+            achievements.icon_path FROM achievements INNER JOIN user_achiev \
             ON achievements.id = user_achiev.achievement_id      \
             WHERE user_achiev.user_id = $1;', [accountID])
 
