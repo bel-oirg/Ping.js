@@ -38,12 +38,6 @@ export default {
             WHERE user_id = $2 AND achievement_id = $3;', [parts, accountID, achievID])
     },
 
-    async all_achievementsS() {
-        const all = await pool.query('SELECT id, title, description, coin_reward, parts, icon_path \
-            FROM achievements')
-        return all.rows
-    },
-
     async list_achievementsS(accountID) {
         const all = await pool.query('SELECT achievements.id, achievements.title, \
             achievements.description, achievements.coin_reward, user_achiev.parts, \

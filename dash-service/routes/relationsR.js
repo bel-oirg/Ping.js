@@ -12,6 +12,7 @@ const createFriend = (fastify, options, done) => {
     
     fastify.get('/block/', URController.blockUserC)
     fastify.get('/unblock/', URController.unblockUserC)
+    
     done()
 }
 

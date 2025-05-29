@@ -48,18 +48,6 @@ export default {
         {
             res.status(400).send({Success:false, Error:err.message})
         }
-    },
-
-    async all_achievementsC(req, res) {
-        try
-        {
-            const all_achiev = await achievementsS.all_achievementsS(req.user.id)
-            res.status(200).send({Success:true, all_achiev})
-        }
-        catch(err)
-        {
-            res.status(400).send({Success:false, Error:err.message})
-        }
     }
 
 }
