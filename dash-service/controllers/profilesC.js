@@ -16,7 +16,6 @@ function passValidator (password) {
 }
 
 export default {
-
     async profilesC (req, res) {
         try
         {
@@ -55,13 +54,13 @@ export default {
             if (errs.length)
                 throw new Error(errs)
             
-            console.log('BFBFBBFBF')
-            const resp = await dp.changePassS(req.headers.authorization, old_pass, new_pass)
-            console.log('1616565151651resp')
-            res.status(resp.status).send(resp.data)
+            await dp.changePassS(req.headers.authorization, old_pass, new_pass)
+            res.status(204)
         }
         catch(err)
         {
+            if (err.status)
+                return res.status(err.status).send({Success:false, Error: 'Incorrect password'})
             res.status(400).send({Success:false, Error: err.message})
         }
     }

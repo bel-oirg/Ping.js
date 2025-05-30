@@ -35,7 +35,7 @@ const googleS = async (jwt, code) => {
     if (search.rows[0].exists)
     {
         const err = new Error('Your username/email is not unique')
-        err.code = 409
+        err.status = 409
         throw err
     }
 
@@ -45,7 +45,7 @@ const googleS = async (jwt, code) => {
             if (err)
             {
                 const error = new Error(`Cannot unlink ${file_path}`)
-                err.code = 400
+                err.status = 400
                 throw error
             }
             else console.log('File Deleted');

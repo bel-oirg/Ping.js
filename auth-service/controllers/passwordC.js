@@ -5,8 +5,8 @@ const changePassC = (fastify) => async(req, res) => {
     {
         const {old_pass, new_pass} = req.body
 
-        const TOKEN = req.headers.authorization.slice(7)
-        const accountID = fastify.jwt.decode(TOKEN)
+        const TOKEN = req.headers.authorization.split(" ")
+        const accountID = fastify.jwt.decode(TOKEN[1])
         
         await changePassS(accountID.id, old_pass, new_pass)
 
@@ -14,7 +14,7 @@ const changePassC = (fastify) => async(req, res) => {
     }
     catch(err)
     {
-        res.status(400).send({Error: err.message})
+        res.status(401).send({Success: 'false'})
     }
 }
 

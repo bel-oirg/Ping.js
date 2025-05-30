@@ -92,6 +92,8 @@ export default {
 
     async changePassS(TOKEN, old_pass, new_pass)
     {  
+        //TODO IF THE PASS CHANGED THE TOKEN WILL STILL WORK
+        //YOU CAN ADD TOKEN VERSION -- UPDATE IT WHEN THE PASS CHANGED
         const response = await axios.post(process.env.AUTH_PCHANGE, 
             { old_pass:old_pass, new_pass:new_pass },
             { headers: { Authorization: TOKEN } }

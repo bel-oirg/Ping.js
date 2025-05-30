@@ -8,14 +8,14 @@ export default {
         if (!user.rows.length)
         {
             const err = new Error("User does not exist")
-            err.code = 401
+            err.status = 401
             throw err
         }
         const is_match = await bcrypt.compare(password, user.rows[0].password)
         if (!is_match)
         {
             const err = new Error("Incorrect Password")
-            err.code = 401
+            err.status = 401
             throw err
         }
         

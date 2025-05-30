@@ -3,9 +3,9 @@ import intraC from '../controllers/intraC.js'
 
 const oauth42 = (fastify, options, done) => {
 
-    fastify.register(import ('@fastify/jwt'),
-    {secret: process.env.JWT_SECRET,
-    sign: {expiresIn:'4h'}})
+    // fastify.register(import ('@fastify/jwt'),
+    // {secret: process.env.JWT_SECRET,
+    // sign: {expiresIn:'4h'}})
     
     const oauth42Schema = {
         schema:

@@ -15,11 +15,11 @@ const appBuilder = async () => {
     fastify.register(import ('@fastify/swagger'))
     fastify.register(import ('@fastify/swagger-ui'), {routePrefix: '/docs',})
     fastify.register(import ('./routes/login_verify.js'))
-    // fastify.register(import ('./routes/registerR.js'))
+    fastify.register(import ('./routes/registerR.js'))
     fastify.register(import ('./routes/loginR.js'))
     // fastify.register(import ('./routes/protected.js'))
-    // fastify.register(import ('./routes/intraR.js'))
-    // fastify.register(import ('./routes/googleR.js'))
+    fastify.register(import ('./routes/intraR.js'))
+    fastify.register(import ('./routes/googleR.js'))
     fastify.register(import ('./routes/passwordR.js'))
 
     return fastify

@@ -26,7 +26,7 @@ const intraS = async (jwt, code) => {
     if (!raw.ok)
     {
         const err = new Error(`${raw.status}`)
-        err.code = 409
+        err.status = 409
         throw err
     }
     
@@ -39,7 +39,7 @@ const intraS = async (jwt, code) => {
     if (!user_data.ok)
     {
         const err = new Error(`[-] USER DATA ${user_data.status}`)
-        err.code = 409
+        err.status = 409
         throw err
     }
 
@@ -56,7 +56,7 @@ const intraS = async (jwt, code) => {
     if (search.rows[0].exists)
     {
         const err = new Error('Your username/email is not unique')
-        err.code = 409
+        err.status = 409
         throw err
     }
 

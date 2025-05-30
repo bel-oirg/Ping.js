@@ -4,9 +4,9 @@ import {OAuth2Client} from 'google-auth-library'
 
 const oauth2google = (fastify, options, done) => {
 
-    fastify.register(import ('@fastify/jwt'),
-    {secret: process.env.JWT_SECRET,
-    sign: {expiresIn:'4h'}})
+    // fastify.register(import ('@fastify/jwt'),
+    // {secret: process.env.JWT_SECRET,
+    // sign: {expiresIn:'4h'}})
 
     const oauthGoogleSchema = {
         schema:
