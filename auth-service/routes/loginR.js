@@ -4,11 +4,6 @@ import loginC from '../controllers/loginC.js'
 
 const auth = (fastify, options, done) => {
 
-
-    fastify.register(import ('@fastify/jwt'),
-    {secret: process.env.JWT_SECRET,
-    sign: {expiresIn:'4h'}})
-
     const loginSchema = {
         schema:
         {
@@ -43,7 +38,7 @@ const auth = (fastify, options, done) => {
         handler: loginC(fastify)
     }
 
-    fastify.post('/login', loginSchema)
+    fastify.post('/login/', loginSchema)
 
     fastify.get('/list', async (req, res) => {
         res.send(await pool.query())

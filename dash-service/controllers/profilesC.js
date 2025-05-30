@@ -46,19 +46,23 @@ export default {
         try
         {
             const {old_pass, new_pass, re_pass} = req.body
-            if (new_pass == re_pass)
+            if (new_pass != re_pass)
                 throw new Error('Passwords does not match')
-
+            
+            if (old_pass == new_pass)
+                throw new Error('The new password is the same as the old')
             const errs = passValidator(new_pass)
             if (errs.length)
                 throw new Error(errs)
-
-            await dp.changePassS(accountID, old_pass, new_pass)
-            res.status(200).send({Success: true})
+            
+            console.log('BFBFBBFBF')
+            const resp = await dp.changePassS(req.headers.authorization, old_pass, new_pass)
+            console.log('1616565151651resp')
+            res.status(resp.status).send(resp.data)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Success:false, Error: err.message})
         }
     }
 }

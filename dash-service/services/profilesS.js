@@ -1,6 +1,6 @@
 import pool from "../config/pooling.js"
 import URS from './relationsS.js'
-import bcrypt from 'bcrypt'
+import axios from 'axios'
 
 const status_types = {
     HE_SENT: 3,
@@ -90,16 +90,12 @@ export default {
         return res.rows
     },
 
-    async changePassS(accountID, old_pass, new_pass)
-    {
-        const login_pass = await pool.query('SELECT password FROM player WHERE id = $1', [accountID])
-        
-        const is_match = await bcrypt.compare(old_pass, login_pass.rows[0].password)
-        if (!is_match)
-            return new Error('Invalid old password')
-
-        const new_hashed = await bcrypt.hash(new_pass, 10)
-        await pool.query('INSERT INTO player(password) VALUES($1);', [new_hashed])
+    async changePassS(TOKEN, old_pass, new_pass)
+    {  
+        const response = await axios.post(process.env.AUTH_PCHANGE, 
+            { old_pass:old_pass, new_pass:new_pass },
+            { headers: { Authorization: TOKEN } }
+        )
+        return response
     }
 }
-
