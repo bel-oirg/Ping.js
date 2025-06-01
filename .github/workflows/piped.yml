@@ -3,7 +3,7 @@ name: PIPED
 on: [push, pull_request]
 
 jobs:
-  build_check:
+  auth:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,7 +19,16 @@ jobs:
       - name: Lint check on auth-service
         run: npm run lint
         working-directory: auth-service
-      
+
+  dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
       - name: install deps on dash-service
         run: npm ci
         working-directory: dash-service
