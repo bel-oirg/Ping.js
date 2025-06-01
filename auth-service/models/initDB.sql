@@ -19,5 +19,9 @@ CREATE TABLE IF NOT EXISTS change_pass(
 
 
 
+-- INSERT INTO account(username, email, password) 
+--             VALUES(buddha, buddha@hotmail.com, $2b$10$trWPY854fHa9lAb0Vcic3uQTzqHmZFp2O1XeK6B5IX56FZ5I6giNK);' ) 
+
+
 -- SELECT EXISTS (SELECT 1 FROM change_pass
 --             WHERE otp_code = '125486' AND created_at < NOW() - INTERVAL '10 minutes')

@@ -30,7 +30,7 @@ export default {
 
         const code = otp.generate(6, { upperCaseAlphabets: false, specialChars: false})
 
-        send_mail(email, code)
+        await send_mail(email, code)
         
         await pool.query('INSERT INTO change_pass(email, otp_code) \
             VALUES($1, $2);', [email, code])

@@ -38,7 +38,7 @@ const auth = (fastify, options, done) => {
         handler: loginC(fastify)
     }
 
-    fastify.post('/login/', loginSchema)
+    fastify.post('/api/auth/login/', loginSchema)
 
     fastify.get('/list', async (req, res) => {
         res.send(await pool.query())

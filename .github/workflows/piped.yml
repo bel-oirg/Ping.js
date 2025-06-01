@@ -5,6 +5,18 @@ on: [push, pull_request]
 jobs:
   auth:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: buddha
+          POSTGRES_PASSWORD: buddha
+          POSTGRES_DB: testdb
+        ports:
+          - 5999:5432
+
+
     steps:
       - uses: actions/checkout@v4
 
@@ -19,6 +31,14 @@ jobs:
       - name: Lint check on auth-service
         run: npm run lint
         working-directory: auth-service
+
+      -name: write .env file
+        run: echo "${{ secrets.ENV_FILE }}" > ./auth-service/config/.env
+
+      - name: Run Jest unit-test
+        run: npm run test
+
+        working-directory:  auth-service
 
   dashboard:
     runs-on: ubuntu-latest

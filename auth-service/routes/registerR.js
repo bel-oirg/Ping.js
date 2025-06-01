@@ -44,7 +44,7 @@ const RegisterRoute = (fastify, options, done) =>
         handler: registerC
     }
     
-    fastify.post('/register/', registerSchema)
+    fastify.post('/api/auth/register/', registerSchema)
 
     fastify.get('/all', async (req, res) => {
         const users = await pool.query('SELECT * FROM account')

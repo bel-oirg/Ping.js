@@ -2,22 +2,27 @@ import appBuilder from '../app.js'
 import request from 'supertest'
 import pool from '../config/pooling.js';
 
-describe ('Checking /login/', () => {
+describe ('Checking /api/auth/login/', () => {
 
     let fastify;
 
     beforeAll(async() => {
+
+        await pool.query('INSERT INTO account(username, email, password) \
+            VALUES($1, $2, $3)', ['buddha', 'buddha@hotmail.com', '$2b$10$trWPY854fHa9lAb0Vcic3uQTzqHmZFp2O1XeK6B5IX56FZ5I6giNK'])
+        //pass -> buddha01@A
         fastify = await appBuilder()
         await fastify.ready()
     })
 
-    afterAll(async() => {
+    afterAll( async() => {
+        await pool.query('DELETE FROM account;')
         await fastify.close()
         await pool.end()
     })
 
     test("no username", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             password: 'dadsa'
         })
 
@@ -25,7 +30,7 @@ describe ('Checking /login/', () => {
     })
 
     test("no password", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: 'buddha'
         })
 
@@ -33,7 +38,7 @@ describe ('Checking /login/', () => {
     })
 
     test("no body", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
         })
 
         expect(resp.statusCode).toBe(400)
@@ -41,8 +46,8 @@ describe ('Checking /login/', () => {
 
 
     test("valid user", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
-            username: "root6119",
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
+            username: "buddha",
             password: "buddha01@A"
         })
 
@@ -51,7 +56,7 @@ describe ('Checking /login/', () => {
 
 
     test("valid user", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: 12356,
             password: "buddha01@A"
         })
@@ -61,8 +66,8 @@ describe ('Checking /login/', () => {
     
 
     test('valid user returns 200 and a token', async () => {
-        const resp = await request(fastify.server).post('/login/').send({
-            username: 'root6119',
+        const resp = await request(fastify.server).post('/api/auth/login/').send({
+            username: 'buddha',
             password: 'buddha01@A',
         });
 
@@ -73,7 +78,7 @@ describe ('Checking /login/', () => {
 
 
     test("SQL injection in username", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: "admin' OR '1'='1",
             password: "password"
         })
@@ -84,7 +89,7 @@ describe ('Checking /login/', () => {
 
 
     test("SQL injection in password", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: "root6119",
             password: "' OR '1'='1"
         })
@@ -95,7 +100,7 @@ describe ('Checking /login/', () => {
 
 
     test("null", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: null,
             password: null
         })
@@ -104,7 +109,7 @@ describe ('Checking /login/', () => {
     })
 
     test("extremely long username", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: "a".repeat(1000),
             password: "password"
         })
@@ -113,7 +118,7 @@ describe ('Checking /login/', () => {
     })
 
     test("extremely long password", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: "root6119",
             password: "a".repeat(1000)
         })
@@ -122,7 +127,7 @@ describe ('Checking /login/', () => {
     })
 
     test("whitespace only username", async () => {
-        const resp = await request(fastify.server).post("/login/").send({
+        const resp = await request(fastify.server).post("/api/auth/login/").send({
             username: "   ",
             password: "password"
         })

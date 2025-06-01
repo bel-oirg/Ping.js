@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-const send_mail = async(to_email, code) => {
+const send_mail = async (to_email, code) => {
 
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -19,12 +19,7 @@ const send_mail = async(to_email, code) => {
         text: `Enter this tmp verification code to continue: ${code}`
     }
     
-    transporter.sendMail(details, function(err, info) {
-        if (err)
-            console.log(err)
-        else
-            console.log(info.response)
-    })
+    await transporter.sendMail(details)
 }
 
 export default send_mail
