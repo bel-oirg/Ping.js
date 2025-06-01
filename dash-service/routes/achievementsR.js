@@ -2,9 +2,9 @@ import ach from '../controllers/achievementsC.js'
 
 const achievements = (fastify, options, done) => {
 
-    fastify.post('/add-achievements/', ach.add_achievementsC)
-    fastify.post('/update-achievements/', ach.update_achievementsC)
-    fastify.get('/my-achievements/', ach.list_achievementsC)
+    fastify.post('/api/dash/add-achievements/', ach.add_achievementsC)
+    fastify.post('/api/dash/update-achievements/', ach.update_achievementsC)
+    fastify.get('/api/dash/my-achievements/', ach.list_achievementsC)
 
     done()
 }
