@@ -5,7 +5,7 @@ export default {
 
     async send_mail(req, res) {
         try
-        {
+        { //TODO add TRANSACTION -- BEGIN -> COMMIT
             const email = req.body['email']
 
             await forgetPassS.send_mailS(email)
