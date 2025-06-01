@@ -4,6 +4,8 @@ import {Client} from 'pg'
 
 function passValidator (password) {
     let errors = []
+    if (password && password.length < 10)
+        errors.push('Password must contain at least 10 characters')
     if (!/[a-z]/.test(password))
         errors.push('Password must contain [a-z]')
     if (!/[A-Z]/.test(password))
@@ -38,11 +40,11 @@ const registerS = async (username , email, password, repassword, first_name, las
     
     //TMP FOR CREATING THE USER
     const player = new Client({
-        user: 'buddha',
-        host: 'localhost',
-        password: 'buddha',
-        port: 5999,
-        database: 'dashdb'
+        user: process.env.DB_USERNAME,
+        host: process.env.DB_HOST,
+        password: process.env.DB_PASSWORD,
+        port: process.env.DB_PORT,
+        database: process.env.DB_DASH
     })
     await player.connect()
     tvals.unshift(id.rows[0].id)

@@ -14,7 +14,7 @@ const changePassC = (fastify) => async(req, res) => {
     }
     catch(err)
     {
-        res.status(401).send({Success: 'false'})
+        res.status(400).send({Error: err.message})
     }
 }
 

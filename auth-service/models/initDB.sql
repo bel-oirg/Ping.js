@@ -7,4 +7,17 @@ CREATE TABLE IF NOT EXISTS account(
     password TEXT NOT NULL,
     is_oauth BOOLEAN DEFAULT FALSE,
     avatar VARCHAR(120)
-)
+);
+
+
+CREATE TABLE IF NOT EXISTS change_pass(
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(60) REFERENCES account(email),
+    otp_code VARCHAR(6) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+
+-- SELECT EXISTS (SELECT 1 FROM change_pass
+--             WHERE otp_code = '125486' AND created_at < NOW() - INTERVAL '10 minutes')

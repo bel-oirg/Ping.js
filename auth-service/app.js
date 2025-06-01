@@ -21,6 +21,7 @@ const appBuilder = async () => {
     fastify.register(import ('./routes/intraR.js'))
     fastify.register(import ('./routes/googleR.js'))
     fastify.register(import ('./routes/passwordR.js'))
+    fastify.register(import ('./routes/forgetPassR.js'))
 
     return fastify
 }
