@@ -1,4 +1,3 @@
-import pool from '../config/pooling.js'
 import registerC from '../controllers/registerC.js'
 
 const RegisterRoute = (fastify, options, done) =>
@@ -40,11 +39,6 @@ const RegisterRoute = (fastify, options, done) =>
     }
     
     fastify.post('/api/auth/register/', registerSchema)
-
-    fastify.get('/all', async (req, res) => {
-        const users = await pool.query('SELECT * FROM account')
-        res.send(JSON.stringify(users.rows, null, 2))
-    })
 
     done()
 }

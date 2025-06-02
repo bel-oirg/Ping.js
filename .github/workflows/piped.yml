@@ -16,7 +16,6 @@ jobs:
         ports:
           - 5999:5432
 
-
     steps:
       - uses: actions/checkout@v4
 
@@ -33,7 +32,7 @@ jobs:
         working-directory: auth-service
 
       - name: write .env file
-        run: echo "${{ secrets.ENV_FILE }}" > ./auth-service/config/.env
+        run: echo "${{ vars.ENV_FILE }}" > ./auth-service/config/.env
 
       - name: Run Jest unit-test
         run: npm run test

@@ -6,13 +6,17 @@ export default
         try
         {
             const {item_id, item_type} = req.body
-            if (item_type > 3 || item_type < 1)
-                throw new Error('Unknown type')
             let table_name = ''
 
-            if (item_type == 1) table_name = 'avatars' 
-            if (item_type == 2) table_name = 'backgrounds' 
-            if (item_type == 3) table_name = 'emotes_packs' 
+            if (item_type == 1)
+                table_name = 'avatars' 
+            else if (item_type == 2)
+                table_name = 'backgrounds' 
+            else if (item_type == 3)
+                table_name = 'emotes_packs' 
+            else
+                throw new Error('Unknown type')
+
 
             const is_success = await storeS.buyS(req.user.id, item_id, item_type, table_name)
             if (!is_success)

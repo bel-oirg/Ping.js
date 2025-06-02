@@ -1,4 +1,3 @@
-import pool from '../config/pooling.js'
 import loginC from '../controllers/loginC.js'
 
 
@@ -38,10 +37,6 @@ const auth = (fastify, options, done) => {
     }
 
     fastify.post('/api/auth/login/', loginSchema)
-
-    fastify.get('/list', async (req, res) => {
-        res.send(await pool.query())
-    })
 
     done()
 }

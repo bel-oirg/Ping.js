@@ -36,9 +36,9 @@ const oauth42 = (fastify, options, done) => {
         handler: intraC(fastify)
     }
 
-    fastify.get('/oauth/', oauth42Schema)
+    fastify.get('/oauth/42/', oauth42Schema)
 
-    fastify.get('/42', (_, res) => {
+    fastify.get('/42/', (_, res) => {
         res.redirect(process.env.API_42)
     })
 
