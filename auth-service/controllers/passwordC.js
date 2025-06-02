@@ -10,7 +10,7 @@ const changePassC = (fastify) => async(req, res) => {
         
         await changePassS(accountID.id, old_pass, new_pass)
 
-        res.status(200).send({Success: 'true'})
+        res.status(200)
     }
     catch(err)
     {

@@ -6,7 +6,7 @@ const RegisterC = async (req, res) =>
     {
         const {username , email, password, repassword, first_name, last_name} = req.body
         await registerS(username , email, password, repassword, first_name, last_name)
-        res.status(201).send({Success: 'true', msg:`${username} created.`})
+        res.status(201)
     }
     catch(err)
     {

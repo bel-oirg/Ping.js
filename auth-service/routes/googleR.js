@@ -22,14 +22,13 @@ const oauth2google = (fastify, options, done) => {
                 '200':
                 {
                     type : 'object',
-                    properties: { Success: {type: 'string'}, token: {type : 'string'} }
+                    properties: { token: {type : 'string'} }
                 },
                 '4xx':
                 {
                     type:'object',
                     properties:
                     {
-                        Success:{type:'string'},
                         Error:{type:'string'}
                     }
                 }

@@ -24,18 +24,13 @@ const RegisterRoute = (fastify, options, done) =>
             {
                 '201':
                 {
-                    type : 'object',
-                    properties:
-                    {
-                        Success: {type: 'string'}
-                    }
+                    type: 'null'
                 },
                 '4xx':
                 {
                     type:'object',
                     properties:
                     {
-                        Success:{type:'string'},
                         Error:{type:'string'}
                     }
                 }
