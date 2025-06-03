@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 export default {
     async loginS (jwt, username, password) {
 
-        const user = await pool.query('SELECT id, password FROM account WHERE username = $1 AND is_oauth = false;', [username])
+        const user = await pool.query(`SELECT id, password FROM account WHERE username = '${username}' AND is_oauth = false;`)
         if (!user.rows.length)
         {
             const err = new Error("User does not exist")

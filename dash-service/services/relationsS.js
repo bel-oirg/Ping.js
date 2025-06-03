@@ -27,7 +27,7 @@ export default {
             sender = $1 AND receiver = $2 AND status = $3)', [otherID, accountID, 0])
 
         if (!relation.rows[0].exists)
-            throw new Error('The relation, does not exist')
+            throw new Error('The relation does not exist')
             
         await pool.query('UPDATE friends SET status = 1     \
             WHERE sender = $1 AND receiver = $2', [otherID, accountID])
@@ -46,7 +46,7 @@ export default {
             sender = $1 AND receiver = $2 AND status = $3)', [otherID, accountID, 0])
 
         if (!relation.rows[0].exists)
-            throw Error('The relation, does not exist')
+            throw Error('The relation does not exist')
 
         await pool.query('DELETE FROM friends WHERE     \
             sender = $1 AND receiver = $2 AND status = $3', [otherID, accountID, 0])

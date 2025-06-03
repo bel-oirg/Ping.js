@@ -9,11 +9,11 @@ export default
                 throw new Error('You cannot send a req to yoursef')
 
             await URServices.SendReq(req.user.id, req.query['id'])
-            res.status(200).send({Success:true, 'msg':'Req sent successfully'})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -24,11 +24,11 @@ export default
                 throw new Error('You cannot accept yoursef')
 
             await URServices.AcceptReq(req.user.id, req.query['id'])
-            res.status(200).send({Success:true, 'msg':'Req Accepted successfully'})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -39,11 +39,11 @@ export default
                 throw new Error('You cannot deny your own req')
 
             await URServices.DenyReq(req.user.id, req.query['id'])
-            res.status(200).send({Success:true, 'msg':'Req Refused successfully'})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -58,11 +58,11 @@ export default
             if (!rowCount)
                 throw new Error('The relation does not exist')
             
-            res.status(200).send({Success:true, 'msg':'Req Refused successfully'})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -74,11 +74,11 @@ export default
 
             await URServices.blockUser(req.user.id, req.query['id'])
 
-            res.status(200).send({Success:true, 'msg':'The user blocked successfully'})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -93,11 +93,11 @@ export default
             if (!rowCount)
                 throw new Error('The relation does not exist')
             
-            res.status(200).send({Success:true, 'msg':'The user unblocked successfully'})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -112,11 +112,11 @@ export default
             if (!rowCount)
                 throw new Error('The relation does not exist')
             
-            res.status(200).send({Success:true})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 
@@ -128,7 +128,7 @@ export default
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     },
 }

@@ -5,11 +5,11 @@ const setupdb = async (db_name) => {
     try
     {
         const client = new Client({
-            user: 'buddha',
-            host: 'localhost',
-            password: 'buddha',
-            port: 5999,
-            database: 'postgres'
+            user: process.env.DB_USERNAME,
+            host: process.env.DB_HOST,
+            database: 'postgres',
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT
         });
 
         await client.connect()
@@ -23,10 +23,10 @@ const setupdb = async (db_name) => {
 
 
         const client2 = new Client({
-            user: 'buddha',
-            host: 'localhost',
-            password: 'buddha',
-            port: 5999,
+            user: process.env.DB_USERNAME,
+            host: process.env.DB_HOST,
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT,
             database: db_name
         });
 

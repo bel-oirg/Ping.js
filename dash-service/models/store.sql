@@ -101,24 +101,3 @@ CREATE TABLE IF NOT EXISTS inventory (
     item_type INT NOT NULL,
     CONSTRAINT item_user PRIMARY KEY (user_id, item_id, item_type)
 );
-
-
--- WITH item_price AS 
---     (SELECT price from avatars WHERE id = 2),        
-    
---     user_budget AS
---         (SELECT budget FROM player WHERE id = 2),  
-
---     legit_trans AS 
---         (SELECT                          
---             ((SELECT price from item_price) <= (SELECT budget FROM user_budget)) AS has_budget),
-    
---     budget_update AS (
---         UPDATE player SET budget = budget - (SELECT price from item_price) 
---         WHERE
---             id = 4 AND
---             (SELECT has_budget FROM legit_trans)
---         RETURNING (SELECT has_budget FROM legit_trans) AS success)
---     INSERT INTO inventory(user_id, item_id, item_type) SELECT 1, 4, 2
---     WHERE (SELECT success FROM budget_update) = true
---     RETURNING (SELECT success FROM budget_update)

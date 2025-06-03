@@ -1,6 +1,6 @@
-// import bcrypt from 'bcrypt'
-// import pool from '../config/pooling.js'
-// import {Client} from 'pg'
+import bcrypt from 'bcrypt'
+import pool from '../config/pooling.js'
+import {Client} from 'pg'
 
 function passValidator (password) {
     let errors = []
@@ -34,24 +34,25 @@ const registerS = async (username , email, password, repassword, first_name, las
         throw new Error(errors)
     
     first_name = last_name
-    // const tvals = [username , email, await bcrypt.hash(password, 10), first_name, last_name]
+    const tvals = [username , email, await bcrypt.hash(password, 10), first_name, last_name]
     
-    
-    // const id = await pool.query('INSERT INTO account(username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5) RETURNING id;', tvals)
+    // await pool.query('INSERT INTO account(username, email, password, first_name, last_name)         \
+    //     VALUES($1, $2, $3, $4, $5) RETURNING id;', tvals)
+    const id = await pool.query('INSERT INTO account(username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5) RETURNING id;', tvals)
     
     //FIXME 
     //TMP FOR CREATING THE USER
-    // const player = new Client({
-    //     user: process.env.DB_USERNAME,
-    //     host: process.env.DB_HOST,
-    //     password: process.env.DB_PASSWORD,
-    //     port: process.env.DB_PORT,
-    //     database: process.env.DB_DASH
-    // })
-    // await player.connect()
-    // tvals.unshift(id.rows[0].id)
-    // await player.query('INSERT INTO player(id, username, email, password, first_name, last_name) VALUES($1, $2, $3, $4, $5, $6);', tvals)
-    // await player.end()
+    const player = new Client({
+        user: process.env.DB_USERNAME,
+        host: process.env.DB_HOST,
+        password: process.env.DB_PASSWORD,
+        port: process.env.DB_PORT,
+        database: process.env.DB_DASH
+    })
+    await player.connect()
+    tvals.unshift(id.rows[0].id)
+    await player.query('INSERT INTO player(id, username, email, first_name, last_name) VALUES($1, $2, $3, $4, $5);', [id.rows[0].id, username , email, first_name, last_name])
+    await player.end()
 }
 
 export default registerS

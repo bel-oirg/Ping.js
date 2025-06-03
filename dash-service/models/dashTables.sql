@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS player(
     email VARCHAR(60) UNIQUE NOT NULL,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    password TEXT NOT NULL,
     is_oauth BOOLEAN DEFAULT FALSE,
     is_otp_active BOOLEAN DEFAULT FALSE,
     is_otp_verified BOOLEAN DEFAULT FALSE,
