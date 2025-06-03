@@ -5,11 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node server",
-
     "test": "cross-env db_name=testdb node --env-file=./config/.env --experimental-vm-modules node_modules/jest/bin/jest.js",
-
     "dev": "cross-env db_name=authdb nodemon --env-file=./config/.env server",
-    
     "lint": "eslint ."
   },
   "keywords": [],
@@ -23,6 +20,7 @@
     "bcrypt": "^5.1.1",
     "fastify": "^5.3.2",
     "google-auth-library": "^9.15.1",
+    "kafkajs": "^2.2.4",
     "nodemailer": "^7.0.3",
     "nodemon": "^3.1.10",
     "otp-generator": "^4.0.1",

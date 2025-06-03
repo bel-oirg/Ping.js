@@ -59,11 +59,17 @@ export default {
 
         return q.rowCount
     },
+    //TODO consider when the receiver is expected to be the sender
 
     async blockUser(accountID, otherID)
     {
-        await pool.query('INSERT INTO friends(sender, receiver, status) WHERE \
-            VALUES($1, $2, $3);', [accountID, otherID, -1])
+        const res = await pool.query('UPDATE friends SET status = -1 \
+            WHERE (sender = $1 AND receiver = $2) OR (sender = $2 AND receiver = $1)\
+            RETURNING sender', [accountID, otherID])
+
+        if (!res.rowCount)
+            await pool.query('INSERT INTO friends(sender, receiver, status) \
+                VALUES($1, $2, $3);', [accountID, otherID, -1])
     },
 
 

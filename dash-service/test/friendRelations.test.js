@@ -8,7 +8,7 @@ const EMAIL1 = 'buddha@hotmail.com'
 const USER2 = 'buddha2'
 const EMAIL2 = 'buddha2@hotmail.com'
 
-describe ('Checking achievements feature', () => {
+describe ('Checking Friends features', () => {
 
     let fastify, token1, token2, id1, id2;
 
@@ -35,6 +35,7 @@ describe ('Checking achievements feature', () => {
         await fastify.close()
         
         await pool.query('DELETE FROM friends;')
+        await pool.query('DELETE FROM player;')
         
         await pool.end()
     })
@@ -133,7 +134,7 @@ describe ('Checking achievements feature', () => {
             expect(resp.statusCode).toBe(400)
         })
 
-        test('self id', async () => {
+        test('cancel self id', async () => {
 
             const resp = await request(fastify.server)
             .get('/api/dash/cancel/')
@@ -183,6 +184,31 @@ describe ('Checking achievements feature', () => {
         })
 
 
+        test('accept a friend', async () => {
+            await request(fastify.server)
+            .get('/api/dash/send-req/')
+            .set('Authorization', `Bearer ${token1}`)
+            .query({ id: id2 })
+
+            await request(fastify.server)
+            .get('/api/dash/accept-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const resp = await request(fastify.server)
+            .get('/api/dash/accept-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const check = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
+                WHERE sender = $1 AND receiver = $2 AND status = $3)', [id1, id2, 1])
+
+            expect(check.rows[0].exists).toBeTruthy()
+            expect(resp.text).toContain('The relation does not exist')
+            expect(resp.statusCode).toBe(400)
+        })
+
+
         test('invalid friend id', async () => {
 
             const resp = await request(fastify.server)
@@ -199,15 +225,95 @@ describe ('Checking achievements feature', () => {
         })
 
 
+    })
 
+    describe ('testing /deny-req/', () => {
+
+        test('valid deny process', async () => {
+
+            await request(fastify.server)
+            .get('/api/dash/send-req/')
+            .set('Authorization', `Bearer ${token1}`)
+            .query({ id: id2 })
+
+
+            const resp = await request(fastify.server)
+            .get('/api/dash/deny-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const check = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
+                WHERE sender = $1 AND receiver = $2)', [id1, id2])
+
+            expect(check.rows[0].exists).toBeFalsy()
+            expect(resp.statusCode).toBe(200)
+        })
+
+        test('invalid deny process', async () => {
+
+            const resp = await request(fastify.server)
+            .get('/api/dash/deny-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const check = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
+                WHERE sender = $1 AND receiver = $2)', [id1, id2])
+
+            expect(check.rows[0].exists).toBeFalsy()
+            expect(resp.statusCode).toBe(400)
+        })
 
     })
 
-    // describe ('testing /deny-req/', () => {
+    describe ('testing /unfriend/', () => {
 
-    // })
+        test('testing send-req + accept-req + unfiend-req by id1', async() => {
 
-    // describe ('testing /unfriend/', () => {
+            await request(fastify.server)
+            .get('/api/dash/send-req/')
+            .set('Authorization', `Bearer ${token1}`)
+            .query({ id: id2 })
 
-    // })
+            await request(fastify.server)
+            .get('/api/dash/accept-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const resp = await request(fastify.server)
+            .get('/api/dash/unfriend/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const check = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
+                WHERE sender = $1 AND receiver = $2)', [id1, id2])
+
+            expect(check.rows[0].exists).toBeFalsy()
+            expect(resp.statusCode).toBe(200)
+        })
+
+
+        test('testing send-req + accept-req + unfiend-req by id2', async() => {
+
+            await request(fastify.server)
+            .get('/api/dash/send-req/')
+            .set('Authorization', `Bearer ${token1}`)
+            .query({ id: id2 })
+
+            await request(fastify.server)
+            .get('/api/dash/accept-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const resp = await request(fastify.server)
+            .get('/api/dash/unfriend/')
+            .set('Authorization', `Bearer ${token1}`)
+            .query({ id: id2 })
+
+            const check = await pool.query('SELECT EXISTS(SELECT 1 FROM friends \
+                WHERE sender = $1 AND receiver = $2)', [id1, id2])
+
+            expect(check.rows[0].exists).toBeFalsy()
+            expect(resp.statusCode).toBe(200)
+        })
+    })
 })
