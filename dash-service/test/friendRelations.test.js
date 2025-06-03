@@ -34,7 +34,7 @@ describe ('Checking Friends features', () => {
     afterAll( async() => {
         await fastify.close()
         
-        await pool.query('DELETE FROM friends;')
+        await pool.query('DELETE FROM friends;') //remv
         await pool.query('DELETE FROM player;')
         
         await pool.end()

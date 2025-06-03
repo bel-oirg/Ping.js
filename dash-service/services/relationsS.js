@@ -107,7 +107,7 @@ export default {
     async FriendList(accountID)
     {
         const relation = await pool.query('SELECT sender, receiver FROM friends     \
-            WHERE (sender = $1 OR receiver = $2) AND status = $3', [accountID,accountID,  1])
+            WHERE (sender = $1 OR receiver = $1) AND status = $2', [accountID, 1])
         return (relation.rows)
     },
 

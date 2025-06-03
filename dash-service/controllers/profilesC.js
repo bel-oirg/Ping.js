@@ -19,13 +19,18 @@ export default {
     async profilesC (req, res) {
         try
         {
-            console.log(req.user.id, req.query['id'])
-            const data = await dp.display_profile(req.query['id'], req.user.id)
+            let data;
+
+            if (req.query['id'])
+                data = await dp.display_profile(req.query['id'], req.user.id)
+            else
+                data = await dp.display_profile(req.user.id, req.user.id)
+
             res.status(200).send(data)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({ Error:err.message })
         }
     },
 
@@ -37,7 +42,7 @@ export default {
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({ Error:err.message })
         }
     },
     
@@ -60,8 +65,26 @@ export default {
         catch(err)
         {
             if (err.status)
-                return res.status(err.status).send({Success:false, Error: 'Incorrect password'})
-            res.status(400).send({Success:false, Error: err.message})
+                return res.status(err.status).send({Error: 'Incorrect password'})
+            res.status(400).send({ Error: err.message })
+        }
+    },
+
+    async editC(req, res){
+
+        try
+        {
+            const {first_name, last_name, bio, avatar, background} = req.body
+            if (!first_name && !last_name && !bio && !avatar && !background)
+                throw new Error('No field is defined')
+
+            await dp.editS(req.user.id, first_name, last_name, bio, avatar, background)
+
+            res.status(200)
+        }
+        catch(err)
+        {
+            res.status(400).send({ Error: err.message })
         }
     }
 }

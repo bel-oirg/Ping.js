@@ -12,12 +12,12 @@ const status_types = {
     I_BLK: -1
 }
 
-const relation_type = async (id, req_id) => 
+const relation_type = async (id, req_id) => //req_id -> token_id
 {
     const fr_or_blocked = await pool.query('SELECT status FROM friends WHERE \
         (sender = $1 AND receiver = $2);', [id, req_id])
 
-    if (fr_or_blocked.rows.length)
+    if (fr_or_blocked.rowCount)
     {
         const status = fr_or_blocked.rows[0].status
         if (!status)
@@ -30,7 +30,7 @@ const relation_type = async (id, req_id) =>
     const fr_or_blocked2 = await pool.query('SELECT status FROM friends WHERE \
         sender = $1 AND receiver = $2;', [req_id, id])
 
-    if (fr_or_blocked2.rows.length)
+    if (fr_or_blocked2.rowCount)
     {
         const status = fr_or_blocked2.rows[0].status
         if (!status)
@@ -44,7 +44,7 @@ const relation_type = async (id, req_id) =>
 
 export default {
 
-    async display_profile(id, req_id) {
+    async display_profile(id, req_id) { //req_id -> token id
         let user_data = await pool.query('SELECT id, username, first_name, \
                 last_name, avatar, background, bio, is_online, is_oauth, exp, rank, level \
                 FROM player WHERE id = $1;', [id])
@@ -63,15 +63,13 @@ export default {
         const relation = await relation_type(id, req_id)
 
         let friends = await URS.FriendList(id)
-        let fr_list = []
         
-        if (relation)
-        {
-            if (relation > 0) // HE DID SOMETHING
-                fr_list = friends.map((fr) => fr.sender)
-            else
-                fr_list = friends.map((fr) => fr.receiver)
-        }
+        const fr_list = friends.map((fr) => {
+            if (fr.receiver == id)
+                return fr.sender
+            return fr.receiver
+        })
+        // console.log(friends)
 
         return {
             "User": user_data,
@@ -99,5 +97,16 @@ export default {
             { headers: { Authorization: TOKEN } }
         )
         return response
+    },
+
+    async editS(accountID, first_name, last_name, bio, avatar, background)
+    {
+        await pool.query('UPDATE player SET \
+            first_name = COALESCE($2, first_name), \
+            last_name = COALESCE($3, last_name),  \
+            bio = COALESCE($4, bio),  \
+            avatar = COALESCE($5, avatar),  \
+            background = COALESCE($6, background)  \
+            WHERE id = $1;', [accountID, first_name, last_name, bio, avatar, background])
     }
 }

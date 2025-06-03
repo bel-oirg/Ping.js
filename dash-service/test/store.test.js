@@ -21,9 +21,6 @@ describe ('Checking achievements feature', () => {
     afterAll( async() => {
         await fastify.close()
 
-        await pool.query('DELETE FROM inventory;')
-        await pool.query('DELETE FROM player;')
-        
         await pool.end()
     })
 
