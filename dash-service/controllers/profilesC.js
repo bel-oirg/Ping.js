@@ -65,7 +65,7 @@ export default {
         catch(err)
         {
             if (err.status)
-                return res.status(err.status).send({Error: 'Incorrect password'})
+                return res.status(401).send({Error: 'Incorrect password'})
             res.status(400).send({ Error: err.message })
         }
     },
