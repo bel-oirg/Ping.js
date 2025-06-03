@@ -42,14 +42,14 @@ jobs:
   dashboard:
 
     services:
-    postgres:
-      image: postgres:15
-      env:
-        POSTGRES_USER: buddha
-        POSTGRES_PASSWORD: buddha
-        POSTGRES_DB: testdb
-      ports:
-        - 5999:5432
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: buddha
+          POSTGRES_PASSWORD: buddha
+          POSTGRES_DB: testdb
+        ports:
+          - 5999:5432
 
     runs-on: ubuntu-latest
     steps:
