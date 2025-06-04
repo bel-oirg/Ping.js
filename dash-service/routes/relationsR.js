@@ -19,16 +19,16 @@ const createFriend = (fastify, options, done) => {
         },
     }
  
-    fastify.get('/api/dash/send-req/' ,{Schema} ,URController.SendReqC)
-    fastify.get('/api/dash/cancel/', {Schema} ,URController.cancelMyReqC)
-    fastify.get('/api/dash/accept-req/' ,{Schema} ,URController.AcceptReqC)
-    fastify.get('/api/dash/deny-req/', {Schema} ,URController.DenyReqC)
-    fastify.get('/api/dash/unfriend/', {Schema} ,URController.unfriendC)
+    fastify.get('/api/dash/send-req/' , Schema ,URController.SendReqC)
+    fastify.get('/api/dash/cancel/', Schema ,URController.cancelMyReqC)
+    fastify.get('/api/dash/accept-req/' ,Schema ,URController.AcceptReqC)
+    fastify.get('/api/dash/deny-req/', Schema ,URController.DenyReqC)
+    fastify.get('/api/dash/unfriend/', Schema ,URController.unfriendC)
     
     fastify.get('/all-relations/', URController.AllRelationsC)
     
-    fastify.get('/api/dash/block/', {Schema} ,URController.blockUserC)
-    fastify.get('/api/dash/unblock/', {Schema} ,URController.unblockUserC)
+    fastify.get('/api/dash/block/', Schema ,URController.blockUserC)
+    fastify.get('/api/dash/unblock/', Schema ,URController.unblockUserC)
     
     done()
 }

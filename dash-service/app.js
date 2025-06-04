@@ -12,11 +12,18 @@ const appBuilder = async () => {
             messageFormat: '{msg} {req.method} {req.url}',
             levelFirst: true, colorize: true, singleLine: true,}}}})
 
+
     fastify.register(import ('@fastify/jwt'),
     {secret: process.env.JWT_SECRET, sign: {expiresIn:'4h'}})
-
-    fastify.addHook('onRequest', async (req) => { await req.jwtVerify() })
-
+    
+    fastify.addHook('onRequest', async (req) => { 
+        if (req.url.startsWith('/docs') || req.url.startsWith('/documentation')) {
+            return
+          }
+        await req.jwtVerify() })
+            
+    fastify.register(import ('@fastify/swagger'))
+    fastify.register(import ('@fastify/swagger-ui'), {routePrefix: '/docs',})
     fastify.register(import ('./routes/relationsR.js'))
     fastify.register(import ('./routes/profilesR.js'))
     fastify.register(import ('./routes/achievementsR.js'))
