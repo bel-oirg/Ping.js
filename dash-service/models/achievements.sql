@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS user_achiev(
   user_id INT REFERENCES player(id),
   achievement_id INT REFERENCES achievements(id),
   parts INT DEFAULT 1,
+  is_claimed BOOLEAN DEFAULT FALSE,
+  claimed_at TIMESTAMP DEFAULT NULL,
   CONSTRAINT pk_Uachiev PRIMARY KEY (user_id, achievement_id)
 );
 

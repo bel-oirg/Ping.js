@@ -17,8 +17,9 @@ describe ('Checking /api/auth/login/', () => {
     })
 
     afterAll( async() => {
-        await pool.query('DELETE FROM account;')
         await fastify.close()
+        
+        await pool.query('DELETE FROM account;')
         await pool.end()
     })
 

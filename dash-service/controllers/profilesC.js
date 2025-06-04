@@ -38,6 +38,7 @@ export default {
         try
         {
             const data = await dp.searchS(req.query['q'])
+            console.log(data)
             res.status(200).send(data)
         }
         catch(err)

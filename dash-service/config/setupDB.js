@@ -37,6 +37,7 @@ const setupdb = async (db_name) => {
         query += fs.readFileSync('./models/ranks.sql', 'utf-8')
         query += fs.readFileSync('./models/achievements.sql', 'utf-8')
         query += fs.readFileSync('./models/store.sql', 'utf-8')
+        query += fs.readFileSync('./models/notifications.sql', 'utf-8')
         await client2.query(query)
         await client2.end()
         console.log('[DB-DASH] init done')
