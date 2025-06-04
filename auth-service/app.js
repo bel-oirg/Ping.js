@@ -21,8 +21,11 @@ const appBuilder = async () => {
     fastify.register(import ('./routes/intraR.js'))
     fastify.register(import ('./routes/googleR.js'))
     fastify.register(import ('./routes/passwordR.js'))
-    fastify.register(import ('./routes/forgetPassR.js'))
-    // fastify.register(import ('./services/kafkaConsumer.js'))
+    fastify.register(import ('./routes/twofaR.js'))
+    fastify.register(import ('./services/kafkaConsumer.js'))
+    
+    if (process.env.db_name.search('test') == -1)
+        fastify.register(import ('./routes/forgetPassR.js'))
 
     return fastify
 }

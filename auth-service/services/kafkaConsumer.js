@@ -1,44 +1,35 @@
-// import kafka from '../config/kafkaClient.js'
-// import pool from '../config/pooling.js'
-// import bcrypt from 'bcrypt'
+import kafka from '../config/kafkaClient.js'
+import pool from '../config/pooling.js'
 
-// const kafkaConsumer = async (fastify) => {
-//     try
-//     {
-//         const consumer = kafka.consumer({ groupId: 'auth-grp' })
+const kafkaConsumer = async (fastify) => {
+    try
+    {
+        const consumer = kafka.consumer({ groupId: 'auth-grp' })
 
-//         await consumer.connect()
-//         await consumer.subscribe({ topic: 'newPass', fromBeginning: false})
+        await consumer.connect()
+        await consumer.subscribe({ topic: 'OTP', fromBeginning: false})
 
-//         consumer.run({
-//             eachMessage: async ({ topic, message }) => {
+        consumer.run({
+            eachMessage: async ({ topic, message }) => {
                 
-//                 if (topic == 'newPass')
-//                 {
-//                     const {id, new_pass} = JSON.parse(message.value)
-//                     console.log('PASSWO111111111RD DONDEONDONEODNEOn')
+                if (topic == 'OTP')
+                {
+                    const {id, is_otp} = JSON.parse(message.value)
                     
-//                     await pool.query('BEGIN')
-                    
-//                     await pool.query('UPDATE account SET password = $2 WHERE id = $1;', 
-//                         [id, await bcrypt.hash(new_pass, 10)])
-                    
-//                     console.log('PASSWORD DONDEONDONEODNEOn')
-                    
-//                     await pool.query('COMMIT')
-//                 }
-//             },
-//         })
+                    await pool.query('UPDATE account SET is_otp = $2   \
+                         WHERE id = $1;', [id, is_otp])
+                }
+            },
+        })
 
-//         fastify.addHook('onClose', async() => {
-//             await consumer.disconnect()
-//         })
-//     }
-//     catch(err)
-//     {
-//         await pool.query('ROLLBACK')
-//         console.log(`[KAFKA] ${err}`)
-//     }
-// }
+        fastify.addHook('onClose', async() => {
+            await consumer.disconnect()
+        })
+    }
+    catch(err)
+    {
+        console.log(`[KAFKA] ${err}`)
+    }
+}
 
-// export default kafkaConsumer
+export default kafkaConsumer

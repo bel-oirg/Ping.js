@@ -15,7 +15,7 @@ const send_mail = async (to_email, code) => {
     const details = {
         from: process.env.EMAIL_HOST,
         to: to_email,
-        subject: `Your PingPong password reset code is ${code}`,
+        subject: `Your PingPong code is ${code}`,
         text: `Enter this tmp verification code to continue: ${code}`
     }
     
