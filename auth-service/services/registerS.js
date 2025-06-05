@@ -30,7 +30,7 @@ const registerS = async (username , email, password, repassword, first_name, las
         throw new Error('Passwords do not match.')
     
     let errors = passValidator(password)
-    if (errors.length) //TODO maybe change it into errors only
+    if (errors.length)
         throw new Error(errors)
     
     first_name = last_name

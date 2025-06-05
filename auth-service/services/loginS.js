@@ -24,7 +24,7 @@ export default {
         
         if (user.rows[0].is_otp)
         {
-            const code = otp.generate(6, { digits: true, //TODO update the forgot pass with digits only
+            const code = otp.generate(6, { digits: true,
                 alphabets: false, upperCase: false, specialChars: false })
             
             await pool.query('DELETE FROM twofa WHERE id = $1', [user.rows[0].id])

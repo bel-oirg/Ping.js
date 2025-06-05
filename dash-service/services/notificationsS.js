@@ -4,7 +4,7 @@ export default {
     async limit4S(accountID)
     {
         const relation = await pool.query('SELECT sender, notif_type, is_readen, created_at     \
-             FROM notifs WHERE receiver = $1 LIMIT 4;', [accountID])
+             FROM notifs WHERE receiver = $1 ORDER BY created_at DESC LIMIT 4;', [accountID])
         
         return (relation.rows)
     },
@@ -12,7 +12,7 @@ export default {
     async detailS(accountID)
     {
         const relation = await pool.query('SELECT sender, notif_type, is_readen, created_at     \
-            FROM notifs WHERE receiver = $1;', [accountID])
+            FROM notifs WHERE receiver = $1 ORDER BY created_at DESC;', [accountID])
         return (relation.rows)
     },
 

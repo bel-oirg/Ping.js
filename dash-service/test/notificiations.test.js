@@ -94,19 +94,73 @@ describe ('Checking Notifications features', () => {
             .set('Authorization', `Bearer ${token1}`)
             .query({ id: id2 })
 
-            const resp = await request(fastify.server)
+            const lim = await request(fastify.server)
+            .get('/api/dash/notif/limit4/')
+            .set('Authorization', `Bearer ${token2}`)
+
+            const full = await request(fastify.server)
             .get('/api/dash/notif/limit4/')
             .set('Authorization', `Bearer ${token2}`)
 
             const check = await pool.query('SELECT sender, receiver, is_readen, notif_type FROM notifs  \
                 WHERE sender = $1 AND receiver = $2;', [id1, id2])
 
-            expect(resp.statusCode).toBe(200)
-            expect(resp.body).toMatchObject([{sender: id1, notif_type: 1, is_readen: false}]) //sender, type, is_readen, created_at
+            expect(lim.statusCode).toBe(200)
+            expect(full.body).toMatchObject([{sender: id1, notif_type: 1, is_readen: false}]) //sender, type, is_readen, created_at
+            expect(lim.body).toMatchObject([{sender: id1, notif_type: 1, is_readen: false}]) //sender, type, is_readen, created_at
             expect(check.rows[0].sender).toBe(id1)
             expect(check.rows[0].receiver).toBe(id2)
             expect(check.rows[0].is_readen).toBeFalsy()
         })
 
+        test('empty notif received', async () => {
+
+            const full = await request(fastify.server)
+            .get('/api/dash/notif/limit4/')
+            .set('Authorization', `Bearer ${token2}`)
+
+
+            expect(full.statusCode).toBe(200)
+            expect(full.body).toMatchObject([])
+        })
+
+
+
+        test('valid friend accepted + notif list', async () => {
+
+            await request(fastify.server)
+            .get('/api/dash/send-req/')
+            .set('Authorization', `Bearer ${token1}`)
+            .query({ id: id2 })
+
+            const accept_r = await request(fastify.server)
+            .get('/api/dash/accept-req/')
+            .set('Authorization', `Bearer ${token2}`)
+            .query({ id: id1 })
+
+            const lim = await request(fastify.server)
+            .get('/api/dash/notif/limit4/')
+            .set('Authorization', `Bearer ${token2}`)
+
+            const receiverr = await request(fastify.server)
+            .get('/api/dash/notif/limit4/')
+            .set('Authorization', `Bearer ${token2}`)
+
+            const senderr = await request(fastify.server)
+            .get('/api/dash/notif/limit4/')
+            .set('Authorization', `Bearer ${token1}`)
+
+            const check = await pool.query('SELECT sender, receiver, is_readen, notif_type FROM notifs  \
+                WHERE sender = $1 AND receiver = $2;', [id1, id2])
+
+            expect(lim.statusCode).toBe(200)
+            expect(accept_r.statusCode).toBe(200)
+            expect(receiverr.body).toMatchObject([
+                {sender: id1, notif_type: 1, is_readen: false},
+            ])
+            expect(senderr.body).toMatchObject([
+                {sender: id2, notif_type: 2, is_readen: false}
+            ]);
+        })
     })
 })
