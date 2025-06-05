@@ -2,24 +2,34 @@ import notifsC from '../controllers/notificationsC.js'
 
 const notifs = (fastify, options, done) => {
 
-    const limit4Schema = {
+    const Schema = {
         schema:
         {
             response:
-            { ///sender, type, is_readen, created_at
+            {
                 '200': { type: 'array', items: {
                      sender: {type:'string'}, notif_type: {type: 'string'},
                      is_readen: {type:'string'}, created_at: {type: 'string'}}
                     },
                 '4xx': { type:'object', properties: { Error: {type:'string'} } }
             }
-        },
-        handler: notifsC.limit4
+        }
     }
 
-    fastify.get('/api/dash/notif/limit4/', limit4Schema)
-    fastify.get('/api/dash/notif/detail/', notifsC.detail)
-    fastify.get('/api/dash/notif/seen/', notifsC.seen)
+    const seenSchema = {
+        schema:
+        {
+            response:
+            {
+                '200': { type: 'null'},
+                '4xx': { type:'object', properties: { Error: {type:'string'} } }
+            }
+        }
+    }
+
+    fastify.get('/api/dash/notif/limit4/', Schema, notifsC.limit4)
+    fastify.get('/api/dash/notif/detail/', Schema, notifsC.detail)
+    fastify.get('/api/dash/notif/seen/', seenSchema, notifsC.seen)
 
     done()
 }

@@ -162,5 +162,38 @@ describe ('Checking Notifications features', () => {
                 {sender: id2, notif_type: 2, is_readen: false}
             ]);
         })
+
+        test('many notif received', async () => {
+
+            const user3 = await pool.query('INSERT INTO player(username, email) \
+                VALUES($1, $2) RETURNING id', ['buddha3', 'buddha3@hotmail.com'])
+
+            const user4 = await pool.query('INSERT INTO player(username, email) \
+                VALUES($1, $2) RETURNING id', ['buddha4', 'buddha4@hotmail.com'])
+
+            const user5 = await pool.query('INSERT INTO player(username, email) \
+                VALUES($1, $2) RETURNING id', ['buddha5', 'buddha5@hotmail.com'])
+
+
+            await pool.query('INSERT INTO notifs(sender, receiver, notif_type) \
+                VALUES($1, $2, $3);', [user3.rows[0].id, id2, 2])
+
+            await pool.query('INSERT INTO notifs(sender, receiver, notif_type) \
+                VALUES($1, $2, $3);', [user4.rows[0].id, id2, 2])
+
+            await pool.query('INSERT INTO notifs(sender, receiver, notif_type) \
+                VALUES($1, $2, $3);', [user5.rows[0].id, id2, 2])
+
+            const full = await request(fastify.server)
+            .get('/api/dash/notif/limit4/')
+            .set('Authorization', `Bearer ${token2}`)
+
+
+            expect(full.statusCode).toBe(200)
+            expect(full.body).toMatchObject([
+                {sender: user5.rows[0].id, notif_type: 2, is_readen: false},
+                {sender: user4.rows[0].id, notif_type: 2, is_readen: false},
+                {sender: user3.rows[0].id, notif_type: 2, is_readen: false},
+            ])        })
     })
 })
