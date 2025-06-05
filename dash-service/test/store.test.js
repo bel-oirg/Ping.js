@@ -106,7 +106,7 @@ describe ('Checking achievements feature', () => {
             const budget = await pool.query('SELECT budget FROM player WHERE username = $1', [TEST_USER])
 
             expect(resp.statusCode).toBe(200)
-            expect(resp.text).toContain('"item_type":1')
+            expect(resp.body).toMatchObject([{item_id: 1, item_type:1}])
             expect(budget.rows[0].budget).toBe(TEST_BUDGET - 100)
         })
 
@@ -135,8 +135,6 @@ describe ('Checking achievements feature', () => {
             expect(budget.rows[0].budget).toBe(TEST_BUDGET)
         })
     })
-
-
 })
 
 

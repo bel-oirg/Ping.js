@@ -21,11 +21,11 @@ export default
             const is_success = await storeS.buyS(req.user.id, item_id, item_type, table_name)
             if (!is_success)
                 throw new Error('Operation Failed')
-            res.status(200).send({Success:true})
+            res.status(200)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({ Error:err.message})
         }
     },
 
@@ -34,11 +34,11 @@ export default
         try
         {
             const listed = await storeS.list_inventoryS(req.user.id)
-            res.status(200).send({Success:true, listed})
+            res.status(200).send(listed)
         }
         catch(err)
         {
-            res.status(400).send({Success:false, Error:err.message})
+            res.status(400).send({Error:err.message})
         }
     }
 }
