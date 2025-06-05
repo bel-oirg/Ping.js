@@ -13,6 +13,9 @@ describe ('Checking achievements feature', () => {
         fastify = await appBuilder()
         await fastify.ready()
 
+        await pool.query('DELETE FROM user_achiev;')
+        await pool.query('DELETE FROM player;')
+
         const user = await pool.query('INSERT INTO player(username, email) \
             VALUES($1, $2) RETURNING id', [TEST_USER, TEST_EMAIL])
         

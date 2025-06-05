@@ -1,4 +1,5 @@
 import pool from '../config/pooling.js'
+import add_notif from '../utils/add_notif.js'
 
 export default {
     async SendReq(accountID, otherID) {
@@ -14,6 +15,7 @@ export default {
             throw new Error("The Current relation, does not allow sending new request")
             
         await pool.query('INSERT INTO friends(sender, receiver) VALUES($1, $2);', [accountID, otherID])
+        await add_notif(accountID, otherID, 1)
     },
 
     async AcceptReq(accountID, otherID) {
@@ -32,6 +34,7 @@ export default {
         await pool.query('UPDATE friends SET status = 1     \
             WHERE sender = $1 AND receiver = $2', [otherID, accountID])
 
+        await add_notif(accountID, otherID, 2)
     },
 
     async DenyReq(accountID, otherID)

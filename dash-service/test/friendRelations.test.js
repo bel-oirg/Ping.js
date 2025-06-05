@@ -16,6 +16,8 @@ describe ('Checking Friends features', () => {
         fastify = await appBuilder()
         await fastify.ready()
 
+        await pool.query('DELETE FROM notifs;')
+        await pool.query('DELETE FROM friends;')
         await pool.query('DELETE FROM player;')
 
         const user1 = await pool.query('INSERT INTO player(username, email) \
@@ -34,7 +36,8 @@ describe ('Checking Friends features', () => {
     afterAll( async() => {
         await fastify.close()
         
-        await pool.query('DELETE FROM friends;') //remv
+        await pool.query('DELETE FROM friends;')
+        await pool.query('DELETE FROM notifs;')
         await pool.query('DELETE FROM player;')
         
         await pool.end()

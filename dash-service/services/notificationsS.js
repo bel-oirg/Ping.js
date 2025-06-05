@@ -3,7 +3,7 @@ import pool from '../config/pooling.js'
 export default {
     async limit4S(accountID)
     {
-        const relation = await pool.query('SELECT sender, type, is_readen, created_at     \
+        const relation = await pool.query('SELECT sender, notif_type, is_readen, created_at     \
              FROM notifs WHERE receiver = $1 LIMIT 4;', [accountID])
         
         return (relation.rows)
@@ -11,7 +11,7 @@ export default {
 
     async detailS(accountID)
     {
-        const relation = await pool.query('SELECT sender, type, is_readen, created_at     \
+        const relation = await pool.query('SELECT sender, notif_type, is_readen, created_at     \
             FROM notifs WHERE receiver = $1;', [accountID])
         return (relation.rows)
     },

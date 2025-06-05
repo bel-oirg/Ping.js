@@ -16,6 +16,7 @@ describe ('Checking Block feature', () => {
         fastify = await appBuilder()
         await fastify.ready()
 
+        await pool.query('DELETE FROM friends;')
         await pool.query('DELETE FROM player;')
 
         const user1 = await pool.query('INSERT INTO player(username, email) \
