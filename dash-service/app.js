@@ -29,9 +29,12 @@ const appBuilder = async () => {
     fastify.register(import ('./routes/achievementsR.js'))
     fastify.register(import ('./routes/storeR.js'))
     fastify.register(import ('./routes/notificationsR.js'))
-
+    
     if (process.env.db_name.search('test') == -1) //FIXME TO SEPARATE THE UNIT TESTING
+    {
+        fastify.register(import ('./utils/live_socket.js'))
         fastify.register(import ('./utils/kafkaConsumer.js'))
+    }
 
     return fastify
 }

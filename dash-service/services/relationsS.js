@@ -111,7 +111,13 @@ export default {
     {
         const relation = await pool.query('SELECT sender, receiver FROM friends     \
             WHERE (sender = $1 OR receiver = $1) AND status = $2', [accountID, 1])
-        return (relation.rows)
+
+        const fr_list = relation.rows.map((fr) => {
+            if (fr.receiver == accountID)
+                return fr.sender
+            return fr.receiver
+        })
+        return (fr_list)
     },
 
     async BlackList(accountID)

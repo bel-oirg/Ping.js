@@ -63,19 +63,12 @@ export default {
         const relation = await relation_type(id, req_id)
 
         let friends = await URS.FriendList(id)
-        
-        const fr_list = friends.map((fr) => {
-            if (fr.receiver == id)
-                return fr.sender
-            return fr.receiver
-        })
-        // console.log(friends)
 
         return {
             "User": user_data,
             "Level": level_data.rows[0],
             "Rank": rank_data.rows[0],
-            "Friends": fr_list,
+            "Friends": friends,
             "is_self": id == req_id,
             "Friendship": relation
         }
