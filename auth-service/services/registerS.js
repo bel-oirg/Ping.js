@@ -2,6 +2,9 @@ import bcrypt from 'bcrypt'
 import pool from '../config/pooling.js'
 import kafka from '../config/kafkaClient.js'
 
+const default_background = 'DEFAULT/BACKGROUND'
+const default_avatar = 'DEFAULT/avatar'
+
 function passValidator (password) {
     let errors = []
     if (password && password.length < 10)
@@ -52,7 +55,9 @@ const registerS = async (username , email, password, repassword, first_name, las
                     email: email,
                     first_name: first_name,
                     last_name: last_name,
-                    is_oauth: false
+                    is_oauth: false,
+                    avatar: default_avatar,
+                    background: default_background
                 })
             }]
         })

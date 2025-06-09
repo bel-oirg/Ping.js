@@ -33,6 +33,7 @@ const appBuilder = async () => {
     if (process.env.db_name.search('test') == -1) //FIXME TO SEPARATE THE UNIT TESTING
     {
         fastify.register(import ('./utils/live_socket.js'))
+        
         fastify.register(import ('./utils/kafkaConsumer.js'))
     }
 
