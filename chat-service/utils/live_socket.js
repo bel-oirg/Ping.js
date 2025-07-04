@@ -22,9 +22,9 @@ const online_state = (fastify, options, done) => {
 
             socket.on('msg', async (json_data) => {
                 const data = json_data.data
-                if (data)
+                const receiver = Number(json_data.receiver)
+                if (data && receiver != socket.decoded.id)
                 {
-                    const receiver = Number(json_data.receiver)
                     const check_receiver = await pool.query('SELECT EXISTS(SELECT 1 FROM chatter WHERE id = $1)', [receiver])
                     if (check_receiver.rows[0].exists)
                     {

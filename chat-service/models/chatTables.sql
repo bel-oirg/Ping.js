@@ -1,4 +1,4 @@
--- Active: 1746933162460@@127.0.0.1@5999@dashdb
+-- Active: 1746933162460@@127.0.0.1@5999@chatdb
 CREATE TABLE IF NOT EXISTS chatter(
     id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
@@ -13,12 +13,13 @@ CREATE TABLE IF NOT EXISTS chatter(
 --     id SERIAL PRIMARY KEY,
 --     user1 INT REFERENCES chatter(id),
 --     user2 INT REFERENCES chatter(id),
---     last_msg1 INT DEFAULT -1,
---     last_msg2 INT DEFAULT -1,
+--     last_msg TEXT NOT NULL,
+--     sender INT REFERENCES chatter(id),
 --     created_at TIMESTAMP DEFAULT NOW()
 -- );
 
 CREATE TABLE IF NOT EXISTS msg(
+    -- id SERIAL PRIMARY KEY,
     user1 INT REFERENCES chatter(id),
     user2 INT REFERENCES chatter(id),
     sender INT REFERENCES chatter(id),
@@ -26,9 +27,5 @@ CREATE TABLE IF NOT EXISTS msg(
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-
---1
---eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzUxNTc5MjExLCJleHAiOjE3NTE1OTM2MTF9.uifXnqOjKWKnLBoAsgicuv0ORdc3qVbPyuU2KOtaR_4
-
---2
---eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzUxNTc5MTc2LCJleHAiOjE3NTE1OTM1NzZ9.GGbAwdy0_XwZRp4cv5_uBnLU8w8o8KVhjeAaV153X-M
+-- WITH conv AS (SELECT *, GREATEST(user1, user2) AS u1, LEAST(user1, user2) AS u2 FROM msg WHERE user1 = 9 OR user2 = 9),
+-- last_msg AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY u1, u2 ORDER BY created_at DESC) FROM conv)  SELECT * FROM last_msg WHERE row_number = 1;
