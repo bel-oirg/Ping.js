@@ -17,7 +17,8 @@ const kafkaConsumer = async (fastify) => {
                     const {id, username, first_name, last_name, avatar, background} = JSON.parse(message.value)
                     
                     await pool.query('INSERT INTO chatter(id, username, first_name, last_name, avatar, background)  \
-                            VALUES($1, $2, $3, $4, $5, $6);', [id, username, first_name, last_name, avatar, background])
+                        VALUES($1, $2, $3, $4, $5, $6);', [id, username, first_name, last_name, avatar, background])
+                    console.log(`consumed new user ${username}`)
                 }
             },
         })

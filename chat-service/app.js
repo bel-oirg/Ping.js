@@ -14,8 +14,17 @@ const appBuilder = async () => {
     fastify.register(import ('@fastify/swagger'))
     fastify.register(import ('@fastify/swagger-ui'), {routePrefix: '/docs',})
 
+
     fastify.register(import ('@fastify/jwt'),
     {secret: process.env.JWT_SECRET, sign: {expiresIn:'4h'}})
+
+
+    fastify.addHook('onRequest', async (req) => { 
+        if (req.url.startsWith('/docs') || req.url.startsWith('/documentation')) {
+            return
+          }
+        await req.jwtVerify() })
+
 
     fastify.register(import('@fastify/cors'), {
         origin: 'http://localhost:3000',
@@ -26,6 +35,7 @@ const appBuilder = async () => {
     {
         fastify.register(import ('./utils/kafkaConsumer.js'))
         fastify.register(import ('./utils/live_socket.js'))
+        fastify.register(import ('./routes/convR.js'))
     }
     return fastify
 }

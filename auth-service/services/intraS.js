@@ -49,7 +49,7 @@ const intraS = async (jwt, code) => {
     let try_login = await pool.query('SELECT id FROM account WHERE username = $1 AND email = $2 AND is_oauth = true', lvalues)
     
     if (try_login.rows[0])
-        return jwt.sign({user_id: try_login.rows[0].id})
+        return jwt.sign({user_id: try_login.rows[0].id}) //TODO maybe change it to id not user_id
 
     const search = await pool.query('SELECT EXISTS(SELECT 1 FROM account WHERE username = $1 OR email = $2);', lvalues)
     
