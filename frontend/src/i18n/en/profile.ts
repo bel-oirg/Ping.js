@@ -1,0 +1,18 @@
+export default {
+  profile: 'Profile',
+  friends: 'Friends',
+  matches: 'Matches',
+  level: 'Level',
+  rank: 'Rank',
+  viewAllFriends: 'View all friends',
+  friendsListEmpty: 'Friends list will be displayed here',
+  matchHistory: 'Match History',
+  matchHistoryEmpty: 'Match history will be displayed here',
+  rankProgress: 'Rank Progress',
+  progressTowards: 'Progress towards {{nextRank}} rank',
+  complete: '{{percent}}% complete - {{exp}} / {{maxExp}} XP',
+  failedToLoadProfile: 'Failed to load profile data',
+  online: 'Online',
+  offline: 'Offline',
+  bio: 'Bio',
+}; 

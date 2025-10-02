@@ -1,0 +1,20 @@
+{
+  "welcome": "Welcome to BlackHole.js",
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Hello, {{name}}!",
+    "stats": "Your Stats"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit"
+  }
+}

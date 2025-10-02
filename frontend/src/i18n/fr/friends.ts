@@ -1,0 +1,16 @@
+export default {
+  friendsManagement: 'Gestion des amis',
+  friends: 'Amis',
+  received: 'Demandes reçues',
+  sent: 'Demandes envoyées',
+  blocked: 'Utilisateurs bloqués',
+  noFriends: 'Aucun ami ajouté pour le moment. Ajoutez des amis pour commencer !',
+  noBlocked: 'Aucun utilisateur bloqué',
+  noPending: "Vous n'avez aucune demande en attente.",
+  noSent: "Vous n'avez envoyé aucune demande d'ami.",
+  viewAllFriends: 'Voir tous les amis',
+  viewFriends: 'Voir les amis de {{username}}',
+  viewMatches: "Voir l'historique des parties de {{username}}",
+  friendsListEmpty: 'La liste d\'amis s\'affichera ici',
+  matchHistoryEmpty: 'L\'historique des parties s\'affichera ici',
+} 

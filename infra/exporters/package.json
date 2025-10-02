@@ -1,0 +1,15 @@
+{
+  "name": "exporters",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.6"
+  }
+}

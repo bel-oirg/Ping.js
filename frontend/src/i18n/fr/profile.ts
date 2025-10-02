@@ -1,0 +1,18 @@
+export default {
+  profile: 'Profil',
+  friends: 'Amis',
+  matches: 'Matchs',
+  level: 'Niveau',
+  rank: 'Rang',
+  viewAllFriends: 'Voir tous les amis',
+  friendsListEmpty: 'La liste des amis s\'affichera ici',
+  matchHistory: 'Historique des matchs',
+  matchHistoryEmpty: 'L\'historique des matchs s\'affichera ici',
+  rankProgress: 'Progression du rang',
+  progressTowards: 'Progression vers le rang {{nextRank}}',
+  complete: '{{percent}}% terminé - {{exp}} / {{maxExp}} XP',
+  failedToLoadProfile: 'Échec du chargement du profil',
+  online: 'En ligne',
+  offline: 'Hors ligne',
+  bio: 'Bio',
+}; 

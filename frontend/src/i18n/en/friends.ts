@@ -1,0 +1,16 @@
+export default {
+  friendsManagement: 'Friends Management',
+  friends: 'Friends',
+  received: 'Received Requests',
+  sent: 'Sent Requests',
+  blocked: 'Blocked Users',
+  noFriends: 'No friends added yet. Add some friends to get started!',
+  noBlocked: 'No blocked users',
+  noPending: 'You have no pending requests.',
+  noSent: "You haven't sent a friend request.",
+  viewAllFriends: 'View all friends',
+  viewFriends: "View {{username}}'s friends",
+  viewMatches: "View {{username}}'s match history",
+  friendsListEmpty: 'Friends list will be displayed here',
+  matchHistoryEmpty: 'Match history will be displayed here',
+} 

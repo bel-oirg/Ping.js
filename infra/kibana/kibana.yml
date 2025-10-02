@@ -1,0 +1,13 @@
+server.name: kibana
+server.host: 0.0.0.0
+elasticsearch.hosts: [ http://elasticsearch:9200 ]
+monitoring.ui.container.elasticsearch.enabled: true
+monitoring.ui.container.logstash.enabled: true
+elasticsearch.username: kibana_system
+elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
+xpack.encryptedSavedObjects.encryptionKey: af4b75a75a15d0ce4c4766459d882dff
+xpack.reporting.encryptionKey: 7fe618d6bc159b61f7cbc7c045312d65
+xpack.security.encryptionKey: 73e4bed4907797914b67ca77e369651d
+server.basePath: /kibana
+server.rewriteBasePath: true
+server.publicBaseUrl: http://blackholejs.art/kibana
